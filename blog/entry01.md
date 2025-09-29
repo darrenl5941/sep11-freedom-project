@@ -1,7 +1,7 @@
-# Entry 1
-##### X/X/XX
+# Entry 1:
+##### X/XX/XXX
 
-Text
+
 
 [Next](entry02.md)
 
