@@ -21,8 +21,52 @@
         <script src="https://cdn.jsdelivr.net/npm/matter-js@0.20.0/build/matter.min.js"></script>
         <script>
             // JS
+            // module aliases
+            var Engine = Matter.Engine,
+                Render = Matter.Render,
+                Runner = Matter.Runner,
+                Bodies = Matter.Bodies,
+                Composite = Matter.Composite;
+
+            // create an engine
+            var engine = Engine.create();
+
+            // create a renderer
+            var render = Render.create({
+                element: document.body,
+                engine: engine
+            });
+
+            var world;
+            var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
+
+            function setup() {
+                createCanvas(400, 400);
+                engine = Engine.create();
+                world = engine.world;
+                box1 = Bodies.rectangle(200, 100, 80, 80);
+                Engine.run(engine);
+            }
+
+            function draw() {
+                background(51);
+                rect(box1.position.x, box1.position.y, 80, 80);
+            }
+
+            // add all of the bodies to the world
+            Composite.add(engine.world, [ground]);
+
+            // run the renderer
+            Render.run(render);
+
+            // create runner
+            var runner = Runner.create();
+
+            // run the engine
+            Runner.run(runner, engine);
 
         </script>
 
     </body>
 </html>
+
