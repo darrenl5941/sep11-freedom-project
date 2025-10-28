@@ -6,7 +6,7 @@
 
 ---
 
-### 10/5/25:
+### 10/5/2025:
 * **Module aliases** are things that set things that are commonly used to different names.
   * Ex:
   ```js
@@ -30,9 +30,26 @@
   ```
   This would add the shapes `boxA`, `boxB`, and `ground` into the world.
 
-### X/X/XX:
-* Text
+### 10/27/2025:
 
+* **When making a box/rectangle** the first two values control the starting x and y value while the last two values control the width and height of the shape.
+  * ex:
+  ```js
+  // this would create a box 400 pixels to the right and 200 pixels down that is 80 pixels wide and 80 pixels tall
+  var boxA = Bodies.rectangle(400, 200, 80, 80);
+  ```
+* You can **drag objects** by creating a mouse with `Mouse.create(render.canvas)` which allows you to drag objects with your mouse
+  * **Stiffness** changes not close the object stays to the mouse or how sticky it is to the mouse
+  * `visible: true` allows you to see the connection from the mouse to the elements.
+* By using an `EventListener` that checks for if a button is pressed I can make it **add more shapes** to the simulaton.
+  * By putting in `Math.random()` for the height and width I can make it generate a different sized box each time
+  
+
+
+
+<!-- ### X/X/XX:
+* Text
+ -->
 
 <!--
 * Links you used today (websites, videos, etc)
