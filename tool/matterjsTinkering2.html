@@ -61,8 +61,7 @@
                     const newBox = Matter.Bodies.rectangle(
                         Math.random() * 800, 0, Math.random() * 200, Math.random() * 80 + 50);
 
-                    // Add the box to the world
-                    Matter.World.add(engine.world, newBox);
+      d.add(engine.world, newBox);
                 }
             });
 

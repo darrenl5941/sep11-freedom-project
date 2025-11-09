@@ -43,6 +43,18 @@
 
         var ground = Bodies.rectangle(0, 590, 1610, 20, { isStatic: true }); // isStatic prevents movement
 
+        // // basic mouse function template
+        // const mouse = Mouse.create(render.canvas);
+        // const mouseConstraint = MouseConstraint.create(engine, {
+        //     mouse: mouse, // makes the object dragging the objects the mouse
+        //     constraint: {
+        //         stiffness: 0.1, // changes how much force is used to drag the object to the mouse
+        //         render: {
+        //             visible: true // lets you see the object's connection to the mouse
+        //         }
+        //     }
+        // });
+
         // Add all of the bodies to the world
         World.add(engine.world, [ground]);
 

@@ -13,7 +13,7 @@
     var Engine = Matter.Engine,
         Render = Matter.Render,
         Runner = Matter.Runner,
-        Bodies = Matter.Bodies,
+        Bodies = Matter.Bodies;
 
     function setup(){
         createCanvas(400, 400);
@@ -43,7 +43,7 @@
   * `visible: true` allows you to see the connection from the mouse to the elements.
 * By using an `EventListener` that checks for if a button is pressed I can make it **add more shapes** to the simulaton.
   * By putting in `Math.random()` for the height and width I can make it generate a different sized box each time
-  
+
 
 
 
