@@ -3,7 +3,7 @@
 
 ### Why I chose Matter JS
 
-Before I chose my tool I had to think of what I wanted to make, which was a game which usedphysics as it's main mechanic. Once I decided on what I wanted to make I looked at and tinkered with multiple different tools that could help me make the physics part such as [_P5play_](https://p5play.org/). I decided on using [_Matter JS_](https://brm.io/matter-js/) as it focused on physics and was the best choice for what I wanted to do with the most options on what mechanics I could make.
+Before I chose my tool I had to think of what I wanted to make, which was a game which used physics as its main mechanic. Once I decided on what I wanted to make I looked at and tinkered with multiple different tools that could help me make the physics part such as [_P5play_](https://p5play.org/). I decided on using [_Matter JS_](https://brm.io/matter-js/) as it focused on physics and was the best choice for what I wanted to do with the most options on what mechanics I could make.
 
 ### Engineering Design Process (EDP)
 
@@ -19,7 +19,7 @@ var box = Bodies.rectangle(200, 200, 100, 40); // makes a variable for the box a
 World.add(engine.world, [ground, box]) // adds the objects on the screen
 ```
 
-One I did that and was able to make simple objects I tried to make it more interactive by allowing the objects to be _dragged by the mouse_. A problem I had with trying to do this was that there were no guides that would show how to do it, so I used AI to ask for what I would need to make it and it told me to use `mouse.create` as a _input handler_ and `MouseConstraint.create` as a _interaction constraint_ so I could say how I wanted the mouse to work. With that information I was able to make the mouse able to drag objects with the code below:
+Once I did that and was able to make simple objects I tried to make it more interactive by allowing the objects to be _dragged by the mouse_. A problem I had with trying to do this was that there were no guides that would show how to do it, so I used AI to ask for what I would need to make it and it told me to use `mouse.create` as a _input handler_ and `MouseConstraint.create` as an _interaction constraint so I could say how I wanted the mouse to work. With that information I was able to make the mouse able to drag objects with the code below:
 
 ```js
 const mouse = Mouse.create(render.canvas);
@@ -34,7 +34,7 @@ const mouseConstraint = MouseConstraint.create(engine, {
 });
 ```
 
-By changing the `stiffness` in the code to a higher value I could make the object follow the mouse more closley and by lowering it the object would have a slight delay and move around the mouse before staying with it. By lowering the stiffness to an extremley low value like `0.0001` I could get the object to hang and swing below the mouse.
+By changing the `stiffness` in the code to a higher value I could make the object follow the mouse more closely and by lowering it the object would have a slight delay and move around the mouse before staying with it. By lowering the stiffness to an extremely low value like `0.0001` I could get the object to hang and swing below the mouse.
 
 ### Skills
 
@@ -45,9 +45,6 @@ One of the skills that I learned through this was to _think outside the box and 
 #### How to Research
 
 Another skill I learned was how to research because many of the guides I used were old and had _outdated code_. When I tried to look for more recent guides there were none, so I used AI to research for what the newer versions used. An example of this is when I had a line of code that was using `World.add` which didn't work, so I asked the AI what the newer version was and it told me to use `Composite.add` which fixed the problem. I learned that AI can be a helpful when you use it to find the tools and resources for what you are trying to make and not using it to give you and answer directly.
-
-
-
 
 [Next](entry02.md)
 
