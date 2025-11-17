@@ -44,7 +44,26 @@
 * By using an `EventListener` that checks for if a button is pressed I can make it **add more shapes** to the simulaton.
   * By putting in `Math.random()` for the height and width I can make it generate a different sized box each time
 
+### 11/10/2025:
 
+* `Constraint.create()` lets you connect two objects or points
+  * Useful for making things have a limit on how far they can go or for making objects hang
+* `Contraint.chain()` lets you connect **multiple** objects at once
+  * example of code:
+  ```js
+  Composites.chain(bridge, 0.3, 0, -0.3, 0, {
+    stiffness: 0.99,
+    length: 0.0001,
+    render: {
+        visible: false
+    }
+  });
+  ```
+  * `stiffness` and `length` don't seem to do anything why they are changed, but it breaks if stiffness is above _1_
+  * The _first_ parameter, in the case above `bridge`, is the group of objects that you want to connect
+  * The _second_ and _fourth_ parameter control the distance between objects
+    * Objects can be pulled past that distance with enough force
+  * The _third_ and _fifth_ parameter control how hard the objects are pulled together
 
 
 <!-- ### X/X/XX:
