@@ -19,7 +19,11 @@
             Bodies = Matter.Bodies,
             Composite = Matter.Composite,
             Mouse = Matter.Mouse,
-            MouseConstraint = Matter.MouseConstraint;
+            MouseConstraint = Matter.MouseConstraint,
+            Composites = Matter.Composites,
+            Body = Matter.Body,
+            Common = Matter.Common
+            Constraint = Matter.Constraint;
 
         // Create an engine & runner
         const engine = Engine.create();
@@ -37,9 +41,12 @@
             }
         });
 
+
         // // example of how to make a box
         // var boxA = Bodies.rectangle(400, 200, 80, 80);
         // var boxB = Bodies.rectangle(450, 50, 80, 80);
+
+        // Make bodies here
 
         var ground = Bodies.rectangle(0, 590, 1610, 20, { isStatic: true }); // isStatic prevents movement
 
