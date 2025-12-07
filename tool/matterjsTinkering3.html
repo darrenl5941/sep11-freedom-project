@@ -63,7 +63,7 @@
                 });
             });
 
-            Composites.chain(bridge, 0.3, 1, -0.3, 0, {
+            Composites.chain(bridge, 0.3, 0, -0.3, 0, {
                 stiffness: 0.99, // does nothing?
                 length: 0.0001, // doesn't do anything?
                 render: {
@@ -116,6 +116,21 @@
 
         // Run the engine
         Runner.run(runner, engine);
+
+        
+
+
+
+        // Pause/start engine
+        let pause = false;
+
+        // When the spacebar is pressed it stpps/starts the engine
+        document.addEventListener('keydown', function(event) {
+            if (event.key === ' ') {
+                pause = !pause;
+                runner.enabled = pause;
+            }
+        });
 
         // Run the renderer
         Render.run(render);
