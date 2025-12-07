@@ -65,6 +65,47 @@
     * Objects can be pulled past that distance with enough force
   * The _third_ and _fifth_ parameter control how hard the objects are pulled together
 
+### 12/01/2025:
+
+* `composites.stack` allows you to say where you want a group of objects to start/end and how many of the objects you want
+* When `runner.enabled` is changed from true/false it can can start/pause the engine
+  * You can create a button to pause the similation with this:
+    ```js
+    // When the spacebar is pressed it stopps/starts the engine
+    document.addEventListener('keydown', function(event) {
+      if (event.key === ' ') {
+          if (runner.enabled == false){
+              runner.enabled = true;
+          }
+          else if (runner.enabled == true){
+              runner.enabled = false;
+          }
+      }
+    });
+    ```
+  * This can also be _refactored_ by using a variable and changing it between `true` and `false` instead
+    ```js
+    let pause = false;
+
+    // When the spacebar is pressed it stopps/starts the engine
+    document.addEventListener('keydown', function(event) {
+      if (event.key === ' ') {
+          pause = !pause;
+          runner.enabled = pause;
+      }
+    });
+    ```
+  * A problem with this though is that if you are dragging an object with a mouse it will continue to be attached until the engine is unpaused. You also can not start dragging objects while the simulation is paused.
+* `applyForce()` allows you put put a force on objects to push them
+  * Here is an example of the how to use it:
+    ```js
+    Matter.Body.applyForce(body, body.position, { x: 0, y: -0.015}); // puts a force pushing up
+    ```
+  * A problem with this though is that if you use this with a button while the simulation is paused the forces will add up with each other creating a very large force
+
+
+
+
 
 <!-- ### X/X/XX:
 * Text
