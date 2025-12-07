@@ -117,9 +117,14 @@
         // Run the engine
         Runner.run(runner, engine);
 
-        
-
-
+        // applyForce test
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'w') {
+                Matter.Composite.allBodies(engine.world).forEach(body => { // makes it work on all objects
+                    Matter.Body.applyForce(body, body.position, { x: 0, y: -0.015}); // puts a force pushing up
+                }
+        )};
+        });
 
         // Pause/start engine
         let pause = false;
