@@ -103,6 +103,64 @@
     ```
   * A problem with this though is that if you use this with a button while the simulation is paused the forces will add up with each other creating a very large force
 
+### 12/08/2025:
+
+* You can control the movement of shapes with arrow keys by using `.addEventListener` and checking for when a key is pressed and using `.applyForce`.
+  * The `.addEventListener` checks for when the condition, the key being pressed, happens and then runs the event
+  * The `if` statments check for when each key is pressed and then uses `applyForce` to put the force on the specific object, could be changed to do multiple at once
+  * Example:
+  ```js
+  document.addEventListener("keydown", (event) => { // checks for when an event happens, like a key being pressed
+      const forceMagnitude = 0.05; // amount of force when key is pressed
+
+      if (event.code === "ArrowUp") { // when up arrow is pressed
+          Body.applyForce(boxA, boxA.position, { x: 0, y: -forceMagnitude }); // puts the force on the shape, boxA
+      }
+      if (event.code === "ArrowDown") {
+          Body.applyForce(boxA, boxA.position, { x: 0, y: forceMagnitude });
+      }
+      if (event.code === "ArrowLeft") {
+          Body.applyForce(boxA, boxA.position, { x: -forceMagnitude, y: 0 });
+      }
+      if (event.code === "ArrowRight") {
+          Body.applyForce(boxA, boxA.position, { x: forceMagnitude, y: 0 });
+      }
+  });
+  ```
+  * A problem with this though is that it will initially go once but take a few seconds before happening multiple times quickly.
+  * To fix this you can make it check for if the _key is down_ instead of if it is pressed, but to adjust for this there should also be a lower `forceMagnitude`.
+    * The difference with this is that the `.addEventListener` makes the value true, applying the force untill the key is lifted, making the `variable` the condition for it to apply the force. In the situation above it would make the listener itself the condition to apply the force, causing it to only happen once
+    * Example:
+    ```js
+    // Track which keys are down
+    const keys = {};
+
+    document.addEventListener("keydown", (event) => { // code works when key is down
+        keys[event.code] = true;
+    });
+
+    document.addEventListener("keyup", (event) => { // code stops working when you stop pressing the key
+        keys[event.code] = false;
+    });
+
+    // Apply movement each tick
+    Matter.Events.on(engine, "beforeUpdate", () => {
+        const forceMagnitude = 0.01; // amount of force when key is pressed
+
+        if (keys["ArrowUp"]) { // when up arrow is held down
+            Body.applyForce(boxA, boxA.position, { x: 0, y: -forceMagnitude }); // puts the force on the shape consistently
+
+        // ... more code below, same as if statement but for other keys
+    ```
+
+
+
+
+
+
+
+
+
 
 
 
