@@ -41,22 +41,52 @@
             }
         });
 
-        document.addEventListener("keydown", (event) => { // checks for when an event happens, like a key being pressed
-            const forceMagnitude = 0.05; // amount of force when key is pressed
+        // Track which keys are down
+        const keys = {};
 
-            if (event.code === "ArrowUp") { // when up arrow is pressed
-                Body.applyForce(boxA, boxA.position, { x: 0, y: -forceMagnitude }); // puts the force on the shape, boxA
+        document.addEventListener("keydown", (event) => { // code works when key is down
+            keys[event.code] = true;
+        });
+
+        document.addEventListener("keyup", (event) => { // code stops working when you stop pressing the key
+            keys[event.code] = false;
+        });
+
+        // Apply movement each tick
+        Matter.Events.on(engine, "beforeUpdate", () => {
+            const forceMagnitude = 0.005; // amount of force when key is pressed
+
+            if (keys["ArrowUp"]) { // when up arrow is held down
+                Body.applyForce(boxA, boxA.position, { x: 0, y: -forceMagnitude }); // puts the force on the shape consistently
             }
-            if (event.code === "ArrowDown") {
+            if (keys["ArrowDown"]) {
                 Body.applyForce(boxA, boxA.position, { x: 0, y: forceMagnitude });
             }
-            if (event.code === "ArrowLeft") {
+            if (keys["ArrowLeft"]) {
                 Body.applyForce(boxA, boxA.position, { x: -forceMagnitude, y: 0 });
             }
-            if (event.code === "ArrowRight") {
+            if (keys["ArrowRight"]) {
                 Body.applyForce(boxA, boxA.position, { x: forceMagnitude, y: 0 });
             }
         });
+
+
+        // document.addEventListener("keydown", (event) => { // checks for when an event happens, like a key being pressed
+        //     const forceMagnitude = 0.05; // amount of force when key is pressed
+
+        //     if (event.code === "ArrowUp") { // when up arrow is pressed
+        //         Body.applyForce(boxA, boxA.position, { x: 0, y: -forceMagnitude }); // puts the force on the shape, boxA
+        //     }
+        //     if (event.code === "ArrowDown") {
+        //         Body.applyForce(boxA, boxA.position, { x: 0, y: forceMagnitude });
+        //     }
+        //     if (event.code === "ArrowLeft") {
+        //         Body.applyForce(boxA, boxA.position, { x: -forceMagnitude, y: 0 });
+        //     }
+        //     if (event.code === "ArrowRight") {
+        //         Body.applyForce(boxA, boxA.position, { x: forceMagnitude, y: 0 });
+        //     }
+        // });
 
 
         // // example of how to make a box
