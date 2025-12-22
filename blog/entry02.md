@@ -7,23 +7,23 @@ While learning _MatterJS_ I focused on practicing with things that would help wi
 
 ### Engineering Design Process (EDP)
 
-I am currently on _part 2_ of the EDP, researching the problem. I am currently researching my tool, _Matter JS_, and learning the different functions and experimenting with the different things I can do with it in preperation for using it in my project.
+I am currently on _part 2_ of the EDP, researching the problem. I am currently researching my tool, _Matter JS_, and learning the different functions and experimenting with the different things I can do with it in preparation for using it in my project.
 
 ### Experimenting with Matter JS
 
-While experimenting with _Matter JS_ I learned many different unique things that you can do with it such as constrainints, connecting or chaining objects, pausing the simulation, user inputs, and more.
+While experimenting with _Matter JS_ I learned many different unique things that you can do with it such as constraints, connecting or chaining objects, pausing the simulation, user inputs, and more.
 
 #### Constraints and Chains
 
 _Constraints_ and _chains_ are very useful as they allow you to _connect objects to specific points or other objects_. One use of this can be seen if you are making a bridge like in the bridge example on the [matter-js github page](https://github.com/liabru/matter-js/blob/master/examples/bridge.js).
 
-Using `Constraint.create()` allows you to connect objects to a specific point which prevents them from moving away from that point of pulls them to it. Here is an example of it:
+Using `Constraint.create()` allows you to connect objects to a specific point which prevents them from moving away from that point or pulls them to it. Here is an example of it:
 
 ```js
 Constraint.create({
     pointA: { x: 140, y: 300 }, // controls point of constraint
     bodyB: bridge.bodies[0], // what object is connected to the constraint
-    pointB: { x: -25, y: 0 }, // breaks the contraint if you change the values too much
+    pointB: { x: -25, y: 0 }, // breaks the constraint if you change the values too much
     length: 2, // how far the object can go from the constraint normally
     stiffness: 0.9 // how much it will resist the object being pulled away
 })
@@ -43,12 +43,12 @@ Composites.chain(bridge, 0.3, 0, -0.3, 0, {
 
 #### Pausing the Simulation
 
-You can pause the simulation by changing `runner.enabled` to false, causing the engine to stop running untill it is re-enabled. Using this you can make a pause button like this:
+You can pause the simulation by changing `runner.enabled` to false, causing the engine to stop running until it is re-enabled. Using this you can make a pause button like this:
 
 ```js
 let pause = false;
 
-// When the spacebar is pressed it stopps/starts the engine
+// When the spacebar is pressed it stops/starts the engine
 document.addEventListener('keydown', function(event) {
     if (event.key === ' ') {
         pause = !pause;
@@ -57,7 +57,7 @@ document.addEventListener('keydown', function(event) {
 });
 ```
 
-#### Controling Objects with User Input
+#### Controlling Objects with User Input
 
 You can control the movement of objects with `forceMagnitude`, which puts a force on an object. Combining this with _event listeners_ allows you to make user inputs put a force on objects. Here is an example of it:
 
@@ -90,7 +90,7 @@ One of the skills I learned from this is _organization_ when I commented my code
 
 #### How to Google
 
-Another one of the skills I learned was _how to google_. When I was coding my object movement with player inputs it would apply the force once, then continue applying it after a few seconds of holding down. By googling the issue and what was wrong with my code I figured out that the code would only run while the _event lisener_ was initially used, meaning that it would not check for if the key was held down or not and by googling that I managed to save a large amount of time and figure out what I needed to do to solve the issue. Like in that case knowing how to google is very useful as it allows you to quickly figure out where the specific issue is and what is causing the issue, saving a large amount of time.
+Another one of the skills I learned was _how to google_. When I was coding my object movement with player inputs it would apply the force once, then continue applying it after a few seconds of holding down. By googling the issue and what was wrong with my code I figured out that the code would only run while the _event listener_ was initially used, meaning that it would not check for if the key was held down or not and by googling that I managed to save a large amount of time and figure out what I needed to do to solve the issue. Like in that case knowing how to google is very useful as it allows you to quickly figure out where the specific issue is and what is causing the issue, saving a large amount of time.
 
 [Previous](entry01.md) | [Next](entry03.md)
 
