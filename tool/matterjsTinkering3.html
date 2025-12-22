@@ -64,8 +64,8 @@
             });
 
             Composites.chain(bridge, 0.3, 0, -0.3, 0, {
-                stiffness: 0.99, // does nothing?
-                length: 0.0001, // doesn't do anything?
+                stiffness: 0.99, // controls the stiffness of the chain's bonds
+                length: 0.0001, // controls how long the bonds between the objects in the chain are
                 render: {
                     visible: false
                 }
@@ -99,11 +99,11 @@
             //     chamfer: { radius: 20 }
             // }),
             Constraint.create({
-                pointA: { x: 140, y: 300 },
-                bodyB: bridge.bodies[0],
-                pointB: { x: -25, y: 0 },
-                length: 2,
-                stiffness: 0.9
+                pointA: { x: 140, y: 300 }, // controls point of constraint
+                bodyB: bridge.bodies[0], // what object is connected to the constraint
+                pointB: { x: -25, y: 0 }, // breaks the contraint if you change the values too much
+                length: 2, // how far the object can go from the constraint normally
+                stiffness: 0.9 // how much it will resist the object being pulled away
             }),
             Constraint.create({
                 pointA: { x: 660, y: 300 },
