@@ -56,7 +56,7 @@
             const forceMagnitude = 0.005; // amount of force when key is pressed
 
             if (keys["ArrowUp"]) { // when up arrow is held down
-                Body.applyForce(boxA, boxA.position, { x: 0, y: -forceMagnitude }); // puts the force on the shape consistently
+                Body.applyForce(boxA, boxA.position, { x: 0, y: -2*forceMagnitude }); // puts the force on the shape consistently
             }
             if (keys["ArrowDown"]) {
                 Body.applyForce(boxA, boxA.position, { x: 0, y: forceMagnitude });
@@ -95,6 +95,11 @@
         // Make bodies here
 
         var boxA = Bodies.rectangle(400, 200, 80, 80);
+        var boxB = Bodies.rectangle(400, 200, 80, 80,
+            {
+                density: 0.0000000001 // changes the weight of the object
+            }
+        );
 
         var ground = Bodies.rectangle(0, 590, 1610, 20, { isStatic: true }); // isStatic prevents movement
 
@@ -111,7 +116,7 @@
         // });
 
         // Add all of the bodies to the world
-        World.add(engine.world, [ground, boxA]);
+        World.add(engine.world, [ground, boxA, boxB]);
 
         // Run the engine
         Runner.run(runner, engine);

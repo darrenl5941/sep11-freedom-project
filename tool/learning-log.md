@@ -46,24 +46,25 @@
 
 ### 11/10/2025:
 
-* `Constraint.create()` lets you connect two objects or points
-  * Useful for making things have a limit on how far they can go or for making objects hang
-* `Contraint.chain()` lets you connect **multiple** objects at once
-  * example of code:
-  ```js
-  Composites.chain(bridge, 0.3, 0, -0.3, 0, {
-    stiffness: 0.99,
-    length: 0.0001,
-    render: {
-        visible: false
-    }
-  });
-  ```
-  * `stiffness` and `length` don't seem to do anything why they are changed, but it breaks if stiffness is above _1_
-  * The _first_ parameter, in the case above `bridge`, is the group of objects that you want to connect
-  * The _second_ and _fourth_ parameter control the distance between objects
-    * Objects can be pulled past that distance with enough force
-  * The _third_ and _fifth_ parameter control how hard the objects are pulled together
+* [matter-js bridge example](https://github.com/liabru/matter-js/blob/master/examples/bridge.js)
+  * `Constraint.create()` lets you connect two objects or points
+    * Useful for making things have a limit on how far they can go or for making objects hang
+  * `Composites.chain()` lets you connect **multiple** objects at once
+    * example of code:
+    ```js
+    Composites.chain(bridge, 0.3, 0, -0.3, 0, {
+        stiffness: 0.99, // controls the stiffness of the chain's bonds
+        length: 0.0001, // controls how long the bonds between the objects in the chain are
+        render: {
+            visible: false
+        }
+    });
+    ```
+    * `stiffness` and `length` don't seem to do anything why they are changed, but it breaks if stiffness is above _1_
+    * The _first_ parameter, in the case above `bridge`, is the group of objects that you want to connect
+    * The _second_ and _fourth_ parameter control the distance between objects
+      * Objects can be pulled past that distance with enough force
+    * The _third_ and _fifth_ parameter control how hard the objects are pulled together
 
 ### 12/01/2025:
 
@@ -132,8 +133,7 @@
     * The difference with this is that the `.addEventListener` makes the value true, applying the force untill the key is lifted, making the `variable` the condition for it to apply the force. In the situation above it would make the listener itself the condition to apply the force, causing it to only happen once
     * Example:
     ```js
-    // Track which keys are down
-    const keys = {};
+    const keys = {}; // Track which keys are down
 
     document.addEventListener("keydown", (event) => { // code works when key is down
         keys[event.code] = true;
@@ -150,19 +150,13 @@
         if (keys["ArrowUp"]) { // when up arrow is held down
             Body.applyForce(boxA, boxA.position, { x: 0, y: -forceMagnitude }); // puts the force on the shape consistently
 
-        // ... more code below, same as if statement but for other keys
+        // ... more code below, same as if statement for `ArrowUp` but for other keys
     ```
 
+### 1/9/2026:
 
-
-
-
-
-
-
-
-
-
+* `density` allows you to change the weight for the object, weight still multiplied by size though
+  * Friction still quickly stops the momentum of the objects though even at low density
 
 
 <!-- ### X/X/XX:
