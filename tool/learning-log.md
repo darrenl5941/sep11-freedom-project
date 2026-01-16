@@ -156,7 +156,22 @@
 ### 1/9/2026:
 
 * `density` allows you to change the weight for the object, weight still multiplied by size though
+  * Example: `Bodies.rectangle( //..., {density: 0.1})`
   * Friction still quickly stops the momentum of the objects though even at low density
+* `engine.world.gravity` controls the gravity, or force all objects are pulled with.
+  * It is split into an `x` and `y` version which control gravity horizontally and vertically. The default for y is 1.
+  * Example:
+  ```js
+  engine.world.gravity.y = 0.5; // halfs gravity, objects will fall half as fast
+  ```
+* `friction` changes how hard an object is to move and how much it slows down when touching another object, usually the ground (0 to 1, default is 0.1)
+  * `frictionStatic` changes how hard it is to push an object or make it start moving (no limit, default is 0.5)
+  * `frictionair` changes how much air resistance or friction in the air an object has (0 to 0.1, default is 0.01)
+
+
+
+
+
 
 
 <!-- ### X/X/XX:

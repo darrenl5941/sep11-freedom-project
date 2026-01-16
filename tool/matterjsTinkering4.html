@@ -94,10 +94,17 @@
 
         // Make bodies here
 
-        var boxA = Bodies.rectangle(400, 200, 80, 80);
+        var boxA = Bodies.rectangle(400, 200, 80, 80,
+            {
+                friction: 0.5, // normal friction, also affects how much object slows down
+                frictionStatic: 1.0,  // how hard an object is to push
+                frictionAir: 0.01     // friction when the object isn't touching anything or is in the air
+            }
+        );
         var boxB = Bodies.rectangle(400, 200, 80, 80,
             {
-                density: 0.0000000001 // changes the weight of the object
+                density: 0.1, // changes the weight of the object
+                frictionStatic: 10
             }
         );
 
@@ -114,6 +121,10 @@
         //         }
         //     }
         // });
+
+        engine.world.gravity.y = 1;
+
+
 
         // Add all of the bodies to the world
         World.add(engine.world, [ground, boxA, boxB]);
