@@ -3,12 +3,12 @@
 
 ### Engineering Design Process (EDP)
 
-I am currently still on _part 2_ of the EDP, researching the problem. I learned more of how to _control interactions between different objects and their surroundings_ by using `properties`. By using properties I can control many things usch as how much objects naturally slow down, their gravity, and how heavy the object are. This will allow me to fine-tune how I want the objects in my project to react.
+I am currently still on _part 2_ of the EDP, researching the problem. I learned more of how to _control interactions between different objects and their surroundings by using `properties`. By using properties I can control many things such as how much objects naturally slow down, their gravity, and how heavy the objects are. This will allow me to fine-tune how I want the objects in my project to react.
 
 ### The Different Properties I Learned
 
 * `density`, which allows you to _change the weight_ of an object
-* `.gravity`, which pulls all objects in a specified directrtion with a specified and _constant amount of force_
+* `.gravity`, which pulls all objects in a specified direction with a specified and _constant amount of force_
 * `friction`, which controls the _speed an object slows_ down when in contact with another object
     * `frictionStatic`, which changes _how hard it is to push an object_ or make it start moving
     * `frictionair`, which changes how much _air resistance_ or friction in the air an object has
@@ -17,7 +17,7 @@ I am currently still on _part 2_ of the EDP, researching the problem. I learned 
 
 #### Density
 
-The first property I used was `density`, which I learned from the [matterJS website](https://brm.io/matter-js/docs/classes/Body.html). `density` allowed me to _change how objects would interact with eachother or with forces_. Lowering the density  allows for objects to gain more velocity from forces applied on them and causes the object to be pushed more when having a collision with another object. Raising the `density` has the opposite effect.
+The first property I used was `density`, which I learned from the [matterJS website](https://brm.io/matter-js/docs/classes/Body.html). `density` allowed me to _change how objects would interact with each other or with forces_. Lowering the density  allows for objects to gain more velocity from forces applied on them and causes the object to be pushed more when having a collision with another object. Raising the `density` has the opposite effect.
 
 Here is an example of density being used to make an object lighter:
 
@@ -41,7 +41,7 @@ engine.world.gravity.y = 0.2; // pulls objects down slowly, low gravity
 
 #### Friction
 
-I learned about `friction` from [this youtube video](https://www.youtube.com/watch?v=urR596FsU68&t=27m7s). In that video I learned that `friction` allows you to _control how much objects will slow down_ while they are moving across the ground or another object. There are also other versions of friction such as `frictionStatic` which controls how hard it is to make an object start moving and `frictionAir` which cojntrols the air resistance for the object. If you set the `friction` to 0 but not the `frictionStatic` or `frictionAir` the object will still slow down over time.
+I learned about `friction` from [this youtube video](https://www.youtube.com/watch?v=urR596FsU68&t=27m7s). In that video I learned that `friction` allows you to _control how much objects will slow down_ while they are moving across the ground or another object. There are also other versions of friction such as `frictionStatic` which controls how hard it is to make an object start moving and `frictionAir` which controls the air resistance for the object. If you set the `friction` to 0 but not the `frictionStatic` or `frictionAir` the object will still slow down over time.
 
 here is an example of using `friction` and the other friction properties:
 
