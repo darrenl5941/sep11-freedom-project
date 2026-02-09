@@ -1,4 +1,4 @@
-# Tool Learning Log
+p/# Tool Learning Log
 
 ## Tool: **MatterJS**
 
@@ -166,7 +166,7 @@
   ```
 * `friction` changes how hard an object is to move and how much it slows down when touching another object, usually the ground (0 to 1, default is 0.1)
   * `frictionStatic` changes how hard it is to push an object or make it start moving (no limit, default is 0.5)
-  * `frictionair` changes how much air resistance or friction in the air an object has (0 to 0.1, default is 0.01)
+  * `frictionAir` changes how much air resistance or friction in the air an object has (0 to 0.1, default is 0.01)
 
 
 
