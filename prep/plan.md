@@ -1,7 +1,7 @@
 # Plan
 
-## Tool: 
-## Product: 
+## Tool: matterJS
+## Product: Turn Based Physics game
 
 ---
 
@@ -9,13 +9,31 @@
 
 #### MVP
 
-- [ ] Task (deadline: X)
-  - [ ] Subtask (deadline: X)
+- [ ] Make two different controlable shapes (deadline: 3/19)
+  - [ ] Create the swapping for which is being controlled (deadline: 3/23)
+- [ ] Add the timed pausing for between turns/moves (deadline: 3/25)
+  - [ ] Make sure forces or other things are not being applied while it is paused (deadline: 3/27)
+  - [ ] Prevent inputs from happening when not paused (deadline: 3/30)
+- [ ] Make match end when one player is knocked off (deadline: 3/30)
+- [ ] Add different moves other than just basic movement (deadline: 4/1)
+  - [ ] Balancing (deadline: 4/2)
+- [ ] Create size/density changes for damage (deadline: 4/3)
+
+<!-- - [ ] Task (deadline: X)
+  - [ ] Subtask (deadline: X) -->
 
 #### Beyond MVP
 
-- [ ] Task
-  - [ ] Subtask
+- [ ] Add preview/indicator for what each action will do <!-- current player needs to stay there but new one needs to have a looping animation with same element without multiple stacking on eachother -->
+- [ ] Add sound effects for collisions
+- [ ] Make camera track on players or movable camera
+- [ ] Add different shapes/characters with different moves
+  - [ ] Balancing
+
+
+
+<!-- - [ ] Task
+  - [ ] Subtask -->
 
 
 <!-- EXAMPLE
@@ -49,7 +67,7 @@
 
 <!-- DO NOT USE THIS YET
 
-#### Peer Feedback 
+#### Peer Feedback
 
 | Name | Glows | Grows |
 | -------- | ------- | ------- |
