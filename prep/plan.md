@@ -9,8 +9,8 @@
 
 #### MVP
 
-- [ ] Make two different controlable shapes (deadline: 3/19)
-  - [ ] Create the swapping for which is being controlled (deadline: 3/23)
+- [X] Make two different controlable shapes (deadline: 3/19)
+  - [X] Create the swapping for which is being controlled (deadline: 3/23)
 - [ ] Add the timed pausing for between turns/moves (deadline: 3/25)
   - [ ] Make sure forces or other things are not being applied while it is paused (deadline: 3/27)
   - [ ] Prevent inputs from happening when not paused (deadline: 3/30)
