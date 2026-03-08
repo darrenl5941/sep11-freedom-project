@@ -168,6 +168,45 @@ p/# Tool Learning Log
   * `frictionStatic` changes how hard it is to push an object or make it start moving (no limit, default is 0.5)
   * `frictionAir` changes how much air resistance or friction in the air an object has (0 to 0.1, default is 0.01)
 
+### 3/2/2026
+
+* `Pairs` allow you to track collisions between different objects allowing for the use of other events involving collisions
+  * Example of setting up pairs:
+    ```js
+    pairs = [
+      { bodyA: player, bodyB: ground },
+      { bodyA: player, bodyB: wall },
+      { bodyA: player, bodyB: enemy }
+    ]
+    ```
+  * `collisionStart` and `collisionEnd`: They are events that check for when objects start or stop touching respectively
+    * Example of using it to check if an object is on the floor:
+      ```js
+      // checks if boxA is touching the ground
+      let onGround = false;
+      Matter.Events.on(engine, "collisionStart", (event) => {
+          event.pairs.forEach((pair) => {
+              const a = pair.bodyA;
+              const b = pair.bodyB;
+
+
+              if ((a.label == "boxA" && b.label == "ground") || (b.label == "boxA" && a.label == "ground")) { // check for it both ways; if bodyA and bodyB are swapped
+                  onGround = true;
+              }
+          });
+      });
+      Matter.Events.on(engine, "collisionEnd", (event) => {
+          event.pairs.forEach((pair) => {
+              const a = pair.bodyA;
+              const b = pair.bodyB;
+
+
+              if (!(a.label == "boxA" && b.label == "ground") || !(b.label == "boxA" && a.label == "ground")) { // check for it both ways; if bodyA and bodyB are swapped
+                  onGround = false;
+              }
+          });
+      });
+      ```
 
 
 
