@@ -1,4 +1,4 @@
-p/# Tool Learning Log
+# Tool Learning Log
 
 ## Tool: **MatterJS**
 
