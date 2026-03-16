@@ -59,10 +59,10 @@
         Matter.Events.on(engine, "collisionStart", (event) => {
         event.pairs.forEach(({ bodyA, bodyB }) => {
             const labels = [bodyA.label, bodyB.label];
-                if (labels.includes("p1") && labels.includes("ground")) {
+                if (labels.includes("p1") && (labels.includes("ground") || labels.includes("p2"))) {
                     p1onGround = true;
                 }
-                if (labels.includes("p2") && labels.includes("ground")) {
+                if (labels.includes("p2") && (labels.includes("ground") || labels.includes("p2"))) {
                     p2onGround = true;
                 }
             }); 
@@ -71,10 +71,10 @@
         Matter.Events.on(engine, "collisionEnd", (event) => {
             event.pairs.forEach(({ bodyA, bodyB }) => {
                 const labels = [bodyA.label, bodyB.label];
-                if (labels.includes("p1") && labels.includes("ground")) {
+                if (labels.includes("p1") && (labels.includes("ground") || labels.includes("p1"))) {
                     p1onGround = false;
                 }
-                if (labels.includes("p2") && labels.includes("ground")) {
+                if (labels.includes("p2") && (labels.includes("ground") || labels.includes("p1"))) {
                     p2onGround = false;
                 }
             });
