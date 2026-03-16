@@ -3,7 +3,7 @@
 
 ### Engineering Design Process (EDP)
 
-I am currently on _part 5_ of the **EDP**, creating the prototype. I have already leanred most of the tools I need to know in my tool, `matterJS`, for my project and have already planned how to make my project so I have started working the creating the **Minimal Viable Product**, or _MVP_.
+I am currently on _part 5_ of the **EDP**, creating the prototype. I have already learned most of the tools I need to know in my tool, `matterJS`, for my project and have already planned how to make my project so I have started working the creating the **Minimal Viable Product**, or _MVP_.
 
 ### What I have Continued Learning About my Tool
 
@@ -19,7 +19,7 @@ Matter.Events.on(engine, "collisionStart", (event) => { // Checks for when objec
         const a = pair.bodyA;
         const b = pair.bodyB;
 
-        // if the colliding objects are the player controlled object and the ground then the varibale tracking if they can jump `onGround` is true, allowing them to jump in another function
+        // if the colliding objects are the player controlled object and the ground then the variable tracking if they can jump `onGround` is true, allowing them to jump in another function
         if ((a.label == "boxA" && b.label == "ground") || (b.label == "boxA" && a.label == "ground")) { // check for it both ways; if bodyA and bodyB are swapped
             onGround = true;
         }
@@ -30,7 +30,7 @@ Matter.Events.on(engine, "collisionEnd", (event) => { // Checks for when objects
         const a = pair.bodyA;
         const b = pair.bodyB;
 
-        // if the objects that stop colliding are the player controlled object and the ground then the varibale tracking if they can jump `onGround` is false, preventing them from jumping in another function
+        // if the objects that stop colliding are the player controlled object and the ground then the variable tracking if they can jump `onGround` is false, preventing them from jumping in another function
         if (!(a.label == "boxA" && b.label == "ground") || !(b.label == "boxA" && a.label == "ground")) { // check for it both ways; if bodyA and bodyB are swapped
             onGround = false;
         }
@@ -45,7 +45,7 @@ While making my MVP I have been following the [plan](https://github.com/darrenl5
 ```md
 #### MVP
 
-- [X] Make two different controlable shapes (deadline: 3/19)
+- [X] Make two different controllable shapes (deadline: 3/19)
   - [X] Create the swapping for which is being controlled (deadline: 3/23)
 - [ ] Add the timed pausing for between turns/moves (deadline: 3/25)
   - [ ] Make sure forces or other things are not being applied while it is paused (deadline: 3/27)
@@ -56,15 +56,15 @@ While making my MVP I have been following the [plan](https://github.com/darrenl5
 - [ ] Create size/density changes for damage (deadline: 4/3)
 ```
 
-So far I have created some of the basic and mose essential parts for my MVP.
+So far I have created some of the basic and most essential parts for my MVP.
 
-I have made two different controbale player objects and swapping between them using `event listeners` checking for key inputs:
+I have made two different controllable player objects and swapping between them using `event listeners` checking for key inputs:
 
 ```js
 // Apply movement each tick
 Matter.Events.on(engine, "beforeUpdate", () => {
     const forceMagnitude = 0.01; // amount of force when key is pressed
-    let currentGrounded = pCurrent.label === "p1" ? p1onGround : p2onGround; // checks which is current object so I don't have to write the arrow up function seperatley for both
+    let currentGrounded = pCurrent.label === "p1" ? p1onGround : p2onGround; // checks which is current object so I don't have to write the arrow up function separately for both
 
     if (keys["ArrowUp"] && currentGrounded) {
         Body.applyForce(pCurrent, pCurrent.position, { x: 0, y: -50 * forceMagnitude });
@@ -84,7 +84,7 @@ Matter.Events.on(engine, "beforeUpdate", () => {
         else if(pCurrent == p2){
             pCurrent = p1
         }
-        // run  = !run ;
+        // run = !run ;
         // runner.enabled = run;
         // console.log(run)
     }
@@ -133,9 +133,9 @@ Matter.Events.on(engine, "collisionEnd", (event) => {
 
 One of the skills I learned was how to _research_. While learning about `pairs` and `collisions` I had many problems that I didn't know how to solve such as not putting `labels` on the objects I was checking for collisions in. By researching examples of how to use `pairs` and `collisions` I managed to figure out how to solve the issue and learned more about how to use `pairs`.
 
-#### Time Managment
+#### Time Management
 
-Another important skill I learned is _time managment_. Since I started working on my MVP I needed to make sure I stay on pace to finish it by my deadline. By making a plan and setting more specific dates for when I should finish each part I am making sure that I have enough time to complete the project and don't run out of time.
+Another important skill I learned is _time Management_. Since I started working on my MVP I needed to make sure I stayed on pace to finish it by my deadline. By making a plan and setting more specific dates for when I should finish each part I am making sure that I have enough time to complete the project and don't run out of time.
 
 [Previous](entry03.md) | [Next](entry05.md)
 
