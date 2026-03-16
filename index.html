@@ -34,7 +34,7 @@
             MouseConstraint = Matter.MouseConstraint,
             Composites = Matter.Composites,
             Body = Matter.Body,
-            Common = Matter.Common
+            Common = Matter.Common,
             Constraint = Matter.Constraint;
 
         // Create an engine & runner
@@ -47,21 +47,54 @@
             element: document.body,
             engine: engine,
             options: {
-                width: 800,
+                width: 1367, // William said make it 1367 because it concidentally fits perfectly
                 height: 600,
                 wireframes: false // Set to true to see wireframes instead of solid shapes
             }
+        });
+
+        // checks if current player is touching the ground
+        let p1onGround = false;
+        Matter.Events.on(engine, "collisionStart", (event) => {
+            event.pairs.forEach((pair) => {
+                const a = pair.bodyA;
+                const b = pair.bodyB;
+
+                if ((a.label == "p1" && b.label == "ground") || (b.label == "p1" && a.label == "ground")) { // check for it both ways; if bodyA and bodyB are swapped
+                    p1onGround = true;
+                }
+            });
+        });
+        Matter.Events.on(engine, "collisionEnd", (event) => {
+            event.pairs.forEach((pair) => {
+                const a = pair.bodyA;
+                const b = pair.bodyB;
+
+                if ((a.label === "p1" && b.label === "ground") ||
+                (b.label === "p1" && a.label === "ground")) {
+                    p1onGround = false;
+                }
+            });
         });
 
         // // example of how to make a box
         // var boxA = Bodies.rectangle(400, 200, 80, 80);
         // var boxB = Bodies.rectangle(450, 50, 80, 80);
 
+
         // Make bodies here
 
-        var ground = Bodies.rectangle(0, 590, 1610, 20, { isStatic: true }); // isStatic prevents movement
-        var p1 = Bodies.rectangle(150, 400, 100, 100); // player 1
-        var p2 = Bodies.rectangle(625, 400, 100, 100); // player 2
+        var ground = Bodies.rectangle(675, 500, 1000, 20, { isStatic: true,
+        label: "ground"
+         }); // isStatic prevents movement
+
+        var p1 = Bodies.rectangle(250, 400, 100, 100, {
+            label: "p1"
+        }); // player 1
+
+        var p2 = Bodies.rectangle(725, 400, 100, 100, {
+            label: "p2"
+        }); // player 2
 
         const keys = {}; // Track which keys are down
 
@@ -75,13 +108,14 @@
 
         var pCurrent = p1
         var spacePressed = false; // to prevent pressing space from swapping `pCurrent` every tick
+        let run = false; // variable to pause/start engine
 
         // Apply movement each tick
         Matter.Events.on(engine, "beforeUpdate", () => {
             const forceMagnitude = 0.01; // amount of force when key is pressed
 
-            if (keys["ArrowUp"]) { // when up arrow is held down
-                Body.applyForce(pCurrent, pCurrent.position, { x: 0, y: -2*forceMagnitude }); // puts the force on the shape consistently
+            if (keys["ArrowUp"] && p1onGround) { // when up arrow is held down
+                Body.applyForce(pCurrent, pCurrent.position, { x: 0, y: -50*forceMagnitude }); // puts the force on the shape consistently
             }
             if (keys["ArrowDown"]) {
                 Body.applyForce(pCurrent, pCurrent.position, { x: 0, y: forceMagnitude });
@@ -101,6 +135,9 @@
                 else if(pCurrent == p2){
                     pCurrent = p1
                 }
+                run  = !run ;
+                runner.enabled = run;
+                console.log(run)
             }
             else if (!keys["Space"]) {
                 spacePressed = false; // resets `spacePressed`
