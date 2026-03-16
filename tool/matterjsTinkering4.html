@@ -96,9 +96,10 @@
 
         var boxA = Bodies.rectangle(400, 200, 80, 80,
             {
+                density: 0.001,
                 friction: 0.0, // normal friction, also affects how much object slows down
-                frictionStatic: 1.0,  // how hard an object is to push
-                frictionAir: 0.01     // friction when the object isn't touching anything or is in the air
+                frictionStatic: .0,  // how hard an object is to push
+                frictionAir: 0.00     // friction when the object isn't touching anything or is in the air
             }
         );
         var boxB = Bodies.rectangle(400, 200, 80, 80,
