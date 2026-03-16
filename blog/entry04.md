@@ -127,6 +127,16 @@ Matter.Events.on(engine, "collisionEnd", (event) => {
 });
 ```
 
+### Skills
+
+#### Researching
+
+One of the skills I learned was how to _research_. While learning about `pairs` and `collisions` I had many problems that I didn't know how to solve such as not putting `labels` on the objects I was checking for collisions in. By researching examples of how to use `pairs` and `collisions` I managed to figure out how to solve the issue and learned more about how to use `pairs`.
+
+#### Time Managment
+
+Another important skill I learned is _time managment_. Since I started working on my MVP I needed to make sure I stay on pace to finish it by my deadline. By making a plan and setting more specific dates for when I should finish each part I am making sure that I have enough time to complete the project and don't run out of time.
+
 [Previous](entry03.md) | [Next](entry05.md)
 
 [Home](../README.md)
