@@ -55,24 +55,27 @@
 
         // checks if current player is touching the ground
         let p1onGround = false;
+        let p2onGround = false;
         Matter.Events.on(engine, "collisionStart", (event) => {
-            event.pairs.forEach((pair) => {
-                const a = pair.bodyA;
-                const b = pair.bodyB;
-
-                if ((a.label == "p1" && b.label == "ground") || (b.label == "p1" && a.label == "ground")) { // check for it both ways; if bodyA and bodyB are swapped
+        event.pairs.forEach(({ bodyA, bodyB }) => {
+            const labels = [bodyA.label, bodyB.label];
+                if (labels.includes("p1") && labels.includes("ground")) {
                     p1onGround = true;
                 }
-            });
+                if (labels.includes("p2") && labels.includes("ground")) {
+                    p2onGround = true;
+                }
+            }); 
         });
-        Matter.Events.on(engine, "collisionEnd", (event) => {
-            event.pairs.forEach((pair) => {
-                const a = pair.bodyA;
-                const b = pair.bodyB;
 
-                if ((a.label === "p1" && b.label === "ground") ||
-                (b.label === "p1" && a.label === "ground")) {
+        Matter.Events.on(engine, "collisionEnd", (event) => {
+            event.pairs.forEach(({ bodyA, bodyB }) => {
+                const labels = [bodyA.label, bodyB.label];
+                if (labels.includes("p1") && labels.includes("ground")) {
                     p1onGround = false;
+                }
+                if (labels.includes("p2") && labels.includes("ground")) {
+                    p2onGround = false;
                 }
             });
         });
@@ -113,10 +116,12 @@
         // Apply movement each tick
         Matter.Events.on(engine, "beforeUpdate", () => {
             const forceMagnitude = 0.01; // amount of force when key is pressed
+            let currentGrounded = pCurrent.label === "p1" ? p1onGround : p2onGround; // checks which is current object so I don't have to write the arrow up function seperatley for both
 
-            if (keys["ArrowUp"] && p1onGround) { // when up arrow is held down
-                Body.applyForce(pCurrent, pCurrent.position, { x: 0, y: -50*forceMagnitude }); // puts the force on the shape consistently
+            if (keys["ArrowUp"] && currentGrounded) {
+                Body.applyForce(pCurrent, pCurrent.position, { x: 0, y: -50 * forceMagnitude });
             }
+
             if (keys["ArrowDown"]) {
                 Body.applyForce(pCurrent, pCurrent.position, { x: 0, y: forceMagnitude });
             }
@@ -135,9 +140,9 @@
                 else if(pCurrent == p2){
                     pCurrent = p1
                 }
-                run  = !run ;
-                runner.enabled = run;
-                console.log(run)
+                // run  = !run ;
+                // runner.enabled = run;
+                // console.log(run)
             }
             else if (!keys["Space"]) {
                 spacePressed = false; // resets `spacePressed`
