@@ -54,16 +54,27 @@
         });
 
         // checks if current player is touching the ground
-        let p1onGround = false;
-        let p2onGround = false;
+        let p1OnGround = false;
+        let p2OnGround = false;
+        let p1OnHead = false;
+        let p2OnHead = false;
         Matter.Events.on(engine, "collisionStart", (event) => {
         event.pairs.forEach(({ bodyA, bodyB }) => {
             const labels = [bodyA.label, bodyB.label];
-                if (labels.includes("p1") && (labels.includes("ground") || labels.includes("p2"))) {
-                    p1onGround = true;
+                // ground checks
+                if (labels.includes("p1") && labels.includes("ground")) {
+                    p1OnGround = true;
                 }
-                if (labels.includes("p2") && (labels.includes("ground") || labels.includes("p2"))) {
-                    p2onGround = true;
+                if (labels.includes("p2") && labels.includes("ground")) {
+                    p2OnGround = true;
+                }
+
+                // on other's head checks
+                if (labels.includes("p1") && labels.includes("p2") && (p1.position.y < p2.position.y)){
+                    p1OnHead = true;
+                }
+                if (labels.includes("p2") && labels.includes("p1") && (p2.position.y < p1.position.y)){
+                    p2OnHead = true;
                 }
             }); 
         });
@@ -71,11 +82,21 @@
         Matter.Events.on(engine, "collisionEnd", (event) => {
             event.pairs.forEach(({ bodyA, bodyB }) => {
                 const labels = [bodyA.label, bodyB.label];
-                if (labels.includes("p1") && (labels.includes("ground") || labels.includes("p1"))) {
-                    p1onGround = false;
+
+                // ground checks
+                if (labels.includes("p1") && labels.includes("ground")) {
+                    p1OnGround = false;
                 }
-                if (labels.includes("p2") && (labels.includes("ground") || labels.includes("p1"))) {
-                    p2onGround = false;
+                if (labels.includes("p2") && labels.includes("ground")) {
+                    p2OnGround = false;
+                }
+
+                // on other's head checks
+                if (labels.includes("p1") && labels.includes("p2") && (p1.position.y < p2.position.y)){
+                    p1OnHead = false;
+                }
+                if (labels.includes("p2") && labels.includes("p1") && (p2.position.y < p1.position.y)){
+                    p2OnHead = false;
                 }
             });
         });
@@ -116,9 +137,10 @@
         // Apply movement each tick
         Matter.Events.on(engine, "beforeUpdate", () => {
             const forceMagnitude = 0.01; // amount of force when key is pressed
-            let currentGrounded = pCurrent.label === "p1" ? p1onGround : p2onGround; // checks which is current object so I don't have to write the arrow up function seperatley for both
+            let currentGrounded = pCurrent.label == "p1" ? p1OnGround : p2OnGround; // checks which is current object so I don't have to write the arrow up function seperatley for both
+            let currentOnHead = pCurrent.label == "p1" ? p1OnHead : p2OnHead // same as previous line but for on head
 
-            if (keys["ArrowUp"] && currentGrounded) {
+            if (keys["ArrowUp"] && (currentGrounded || currentOnHead)) {
                 Body.applyForce(pCurrent, pCurrent.position, { x: 0, y: -50 * forceMagnitude });
             }
 
