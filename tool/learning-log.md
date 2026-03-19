@@ -208,11 +208,46 @@
       });
       ```
 
+    ### 3/16/2026
 
-
-
-
-
+    * `Collision Filters` allow you to control which objects can interact with eachother
+      * Example:
+        ```js
+        collisionFilter: {
+            category: BULLET,
+            mask: ENEMY | GROUND
+        }
+        ``` 
+      * `Category`is what the object's identification, or group, is.
+      * `Mask` controls which objects or other groups this specific object can collide with.
+      * `Group` controls if the object will always collide (positive value), never collide (negative value), or collide based off of the collision filters (0).
+        * They should not be used if you are using masks unless you are trying to toggle everything at once with `eventListeners` or `if` statements.
+      * You also need to set variables for all the categories; **They must be powers of 2**
+        * Example:
+          ```js
+          const PLAYER = 0x0001;
+          const ENEMY  = 0x0002;
+          const GROUND = 0x0004;
+          const BULLET = 0x0008;
+          ```
+      * Checking collision filters in if statements:
+        * You can not use `==` because of how bitmasks work, instead you have to use `&`
+          * `&` always makes the if statement true as long as one part of the actual mask matches it
+        * Using `===` checks if it is exactly the same, allowing you to check for one specific group of masks
+        * Example:
+          ```js
+          // ...
+          if(keys["Space"]) {
+                // Enables/disables collisions with other box
+                if(boxA.collisionFilter.mask === GROUND){ // has to be === to check if it is exactly equal to
+                    boxA.collisionFilter.mask = GROUND | OTHER;
+                }
+                else{ // if boxA.collisionFilter.mask & GROUND | OTHER;
+                    boxA.collisionFilter.mask = GROUND
+                }
+            }
+          // ...
+          ```
 <!-- ### X/X/XX:
 * Text
  -->

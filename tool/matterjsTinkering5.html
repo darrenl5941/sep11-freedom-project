@@ -92,7 +92,12 @@
             }
             if(keys["Space"]) {
                 // Enables/disables collisions with other box
-                boxA.collisionFilter.mask = GROUND | OTHER;
+                if(boxA.collisionFilter.mask === GROUND){ // has to be === to check if it is exactly equal to
+                    boxA.collisionFilter.mask = GROUND | OTHER;
+                }
+                else{ // if boxA.collisionFilter.mask & GROUND | OTHER;
+                    boxA.collisionFilter.mask = GROUND
+                }
 
                 // // Create a new box at a random horizontal position
                 // const newBox = Matter.Bodies.rectangle(
