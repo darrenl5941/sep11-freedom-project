@@ -116,7 +116,7 @@
             label: "p1"
         }); // player 1
 
-        var p2 = Bodies.rectangle(725, 400, 100, 100, {
+        var p2 = Bodies.rectangle(1100, 400, 100, 100, {
             label: "p2"
         }); // player 2
 
@@ -136,12 +136,26 @@
 
         // Apply movement each tick
         Matter.Events.on(engine, "beforeUpdate", () => {
+            // end game
+            if(p1.position.y > 800){
+                console.log("p2 Wins")
+            }
+            else if(p2.position.y > 800){
+                console.log("p1 Wins")
+            }
+
             const forceMagnitude = 0.01; // amount of force when key is pressed
             let currentGrounded = pCurrent.label == "p1" ? p1OnGround : p2OnGround; // checks which is current object so I don't have to write the arrow up function seperatley for both
             let currentOnHead = pCurrent.label == "p1" ? p1OnHead : p2OnHead // same as previous line but for on head
 
             if (keys["ArrowUp"] && (currentGrounded || currentOnHead)) {
                 Body.applyForce(pCurrent, pCurrent.position, { x: 0, y: -50 * forceMagnitude });
+                if(currentOnHead && (pCurrent == p1)){
+                    Body.applyForce(p2, p2.position, {x: 0, y: 25 * forceMagnitude});
+                }
+                else if(currentOnHead && (pCurrent == p2)){
+                    Body.applyForce(p1, p1.position, {x: 0, y: 25 * forceMagnitude});
+                }
             }
 
             if (keys["ArrowDown"]) {
@@ -153,24 +167,45 @@
             if (keys["ArrowRight"]) {
                 Body.applyForce(pCurrent, pCurrent.position, { x: forceMagnitude, y: 0 });
             }
+        }); // closes Matter.Events.on
 
+        // resume game and swap players
+        document.addEventListener("keydown", (event) => {
             if (keys["Space"] && !spacePressed) {
                 spacePressed = true; // prevents constant toggling
-                if(pCurrent == p1){
-                    pCurrent = p2
+                if (pCurrent == p1) {
+                    pCurrent = p2;
                 }
-                else if(pCurrent == p2){
-                    pCurrent = p1
+                else if (pCurrent == p2) {
+                    pCurrent = p1;
                 }
-                // run  = !run ;
-                // runner.enabled = run;
-                // console.log(run)
-            }
-            else if (!keys["Space"]) {
-                spacePressed = false; // resets `spacePressed`
+                startCountDown(); // start the timer again
+                runner.enabled = true; // un-pause the engine 
             }
         });
+  
+        // for pausing
+        let countDown = 5;
+        let countDownStored = null; // to store the count down function
+        function startCountDown() {
+            // prevent multiple intervals running at once
+            if (countDownStored != null) return; // ends the loop if it tries to run again while already running
 
+            countDownStored = setInterval(() => {
+                if (countDown > 0) {
+                    countDown -= 0.1;
+                    console.log(countDown) // for testing
+                } else {
+                    runner.enabled = false;
+                    countDown = 5;
+                    clearInterval(countDownStored);
+                    countDownStored = null; // allow the function to run again
+                    spacePressed = false; // allow space to be pressed again
+                }
+
+            }, 100);
+        }
+    
         // // basic mouse function template
         // const mouse = Mouse.create(render.canvas);
         // const mouseConstraint = MouseConstraint.create(engine, {
