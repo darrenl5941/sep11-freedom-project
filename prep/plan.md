@@ -14,8 +14,8 @@
 - [X] Add the timed pausing for between turns/moves (deadline: 3/25)
   - [X] Make sure forces or other things are not being applied while it is paused (deadline: 3/27)
   - [X] Prevent inputs from happening when not paused (deadline: 3/30)
-- [ ] Make match end when one player is knocked off (deadline: 3/30)
-  - [ ] Make it show who won on screen (deadline: 3/30)
+- [X] Make match end when one player is knocked off (deadline: 3/30) <!-- allow player to still move around -->
+  - [X] Make it show who won on screen (deadline: 3/30)
 - [ ] Add different moves other than just basic movement (deadline: 4/1)
   - [ ] Balancing (deadline: 4/2)
 - [ ] Create size/density changes for damage (deadline: 4/3)
