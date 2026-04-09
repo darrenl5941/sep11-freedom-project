@@ -78,6 +78,10 @@
             }
         });
 
+        // to keep track of timing and keep everything in sync
+        let movementPhase = false;
+        let movementTime = 0;
+
         // checks if current player is touching the ground
         let p1OnGround = false;
         let p2OnGround = false;
@@ -154,7 +158,7 @@
         let run = false; // variable to pause/start engine
 
         // Apply movement each tick
-        Matter.Events.on(engine, "beforeUpdate", () => {
+        Matter.Events.on(engine, "beforeUpdate", (event) => {
             // end game
             if(p1.position.y > 800 && winner != "p1"){
                 console.log("p2 wins");
@@ -165,6 +169,17 @@
                 console.log("p1 wins");
                 winner = "p1";
                 document.getElementById("displayWinner").innerText = winner + " wins";
+            }
+        });
+
+        Matter.Events.on(engine, "afterUpdate", (event) => {
+            if (!movementPhase) return; // prevents running while movement phase active
+
+            movementTime += event.delta; // add milliseconds since last tick; delta is time since last tick in the engine
+
+            if (movementTime >= 1000) { // 1 second of time has passed
+                movementPhase = false;
+                runner.enabled = false; // pause engine EXACTLY on time
             }
         });
 
@@ -184,13 +199,11 @@
                 input = [];
                 document.getElementById("displayAction").innerText = "Action: ";
 
-                runner.enabled = true; // un-pause the engine allowing for the inputs to happen
-
                 startCountDown(); // start the timer again 
                 return; // to help prevent errors related to changing turns
             }
 
-            if (!runner.enabled) return; // only allow input during the turn
+            if (movementPhase) return; // prevent inputs during the movement phase
 
             let currentGrounded = pCurrent.label == "p1" ? p1OnGround : p2OnGround;
             let currentOnHead   = pCurrent.label == "p1" ? p1OnHead   : p2OnHead;
@@ -269,18 +282,15 @@
                     // console.log(countDown) // for testing
                 } else {
                     runInputs() // apply movement when input phase is over
-                    // show 1 second of movement
-                    setTimeout(() => {
-                        runner.enabled = false;
-                    }, 1000);
+                    movementPhase = true; // start tracking physics time
+                    movementTime = 0; // reset timer
+                    runner.enabled = true; // allow movement
 
-                    runner.enabled = false;
                     countDown = 5;
                     clearInterval(countDownStored);
                     countDownStored = null; // allow the function to run again
                     spacePressed = false; // allow space to be pressed again
-                    document.getElementById("displayTimer").innerText = 0.00 + " s";                    
-
+                    document.getElementById("displayTimer").innerText = "0.00 s";                    
                 }
             }, 10);
         }
