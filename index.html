@@ -168,8 +168,28 @@
             }
         });
 
-        // resume game and swap players
         document.addEventListener("keydown", (event) => {
+
+            // Ending turn/starting next turn
+            if (event.code == "Space" && !spacePressed) {
+                spacePressed = true; // prevents constant toggling
+                if (pCurrent == p1) {
+                    pCurrent = p2;
+                }
+                else if (pCurrent == p2) {
+                    pCurrent = p1;
+                }
+
+                // reset inputs when next turn starts
+                input = [];
+                document.getElementById("displayAction").innerText = "Action: ";
+
+                runner.enabled = true; // un-pause the engine allowing for the inputs to happen
+
+                startCountDown(); // start the timer again 
+                return; // to help prevent errors related to changing turns
+            }
+
             if (!runner.enabled) return; // only allow input during the turn
 
             let currentGrounded = pCurrent.label == "p1" ? p1OnGround : p2OnGround;
@@ -232,26 +252,7 @@
                 input.push("right");
             }
 
-            // Update UI
-            document.getElementById("displayAction").innerText =
-                "Action: " + input.join(" + ");
-
-            // Ending turn/starting next turn
-            if (event.code == "Space" && !spacePressed) {
-                spacePressed = true; // prevents constant toggling
-                if (pCurrent == p1) {
-                    pCurrent = p2;
-                }
-                else if (pCurrent == p2) {
-                    pCurrent = p1;
-                }
-
-                // reset inputs when next turn starts
-                input = [];
-                document.getElementById("displayAction").innerText = "Action: ";
-
-                startCountDown(); // start the timer again 
-            }
+            document.getElementById("displayAction").innerText = "Action: " + input.join(" + "); // Update UI
         });
   
         // for pausing
@@ -268,6 +269,10 @@
                     // console.log(countDown) // for testing
                 } else {
                     runInputs() // apply movement when input phase is over
+                    // show 1 second of movement
+                    setTimeout(() => {
+                        runner.enabled = false;
+                    }, 1000);
 
                     runner.enabled = false;
                     countDown = 5;
@@ -281,19 +286,17 @@
         }
 
         function runInputs() {
-            runner.enabled = true; // un-pause the engine allowing for the inputs to happen
-
-            const forceMagnitude = 0.1; // amount of force when key is pressed
+            const forceMagnitude = 0.25; // amount of force when key is pressed
 
             let currentOnHead = pCurrent.label == "p1" ? p1OnHead : p2OnHead // checks which is current object
 
             if (input.includes("jump") || input.includes("jumpOnHead")) {
-                Body.applyForce(pCurrent, pCurrent.position, { x: 0, y: -50 * forceMagnitude });
+                Body.applyForce(pCurrent, pCurrent.position, { x: 0, y: -2 * forceMagnitude });
                 if(currentOnHead && (pCurrent == p1)){
-                    Body.applyForce(p2, p2.position, {x: 0, y: 25 * forceMagnitude});
+                    Body.applyForce(p2, p2.position, {x: 0, y: forceMagnitude});
                 }
                 else if(currentOnHead && (pCurrent == p2)){
-                    Body.applyForce(p1, p1.position, {x: 0, y: 25 * forceMagnitude});
+                    Body.applyForce(p1, p1.position, {x: 0, y: forceMagnitude});
                 }
             }
 
