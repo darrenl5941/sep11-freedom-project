@@ -121,10 +121,8 @@
                 }
 
                 // on other's head checks
-                if (labels.includes("p1") && labels.includes("p2") && (p1.position.y < p2.position.y)){
+                if (labels.includes("p1") && labels.includes("p2")) {
                     p1OnHead = false;
-                }
-                if (labels.includes("p2") && labels.includes("p1") && (p2.position.y < p1.position.y)){
                     p2OnHead = false;
                 }
             });
@@ -134,21 +132,50 @@
         // var boxA = Bodies.rectangle(400, 200, 80, 80);
         // var boxB = Bodies.rectangle(450, 50, 80, 80);
 
+
+        const PLAYER = 0x0001;
+        const GROUND = 0x0002;
+        const GHOST  = 0x0004;
         // Make bodies here
 
-        var ground = Bodies.rectangle(675, 500, 1000, 20, { isStatic: true,
-        label: "ground"
-         }); // isStatic prevents movement
+        // ground
+        var ground = Bodies.rectangle(675, 500, 1000, 20, {
+            isStatic: true, // isStatic prevents movement
+            collisionFilter: {
+                category: GROUND,
+                mask: PLAYER // players collide with ground
+            }
+        }); 
+        var groundHitbox = Bodies.rectangle(675, 490, 1050, 50, { // for jumping
+            isStatic: true,
+            label: "ground",
+            isSensor: true, // allows to still detect collisions without actually colliding
+            collisionFilter: {
+                category: GHOST,
+                mask: PLAYER // collide with nothing, but still triggers events with players
+            }
+        });
 
+        // player 1
         var p1 = Bodies.rectangle(250, 400, 100, 100, {
             friction: 0.01,
-            label: "p1"
-        }); // player 1
+            label: "p1",
+            collisionFilter: {
+                category: PLAYER,
+                mask: PLAYER | GROUND | GHOST
 
+            }
+        });
+
+        // player 2
         var p2 = Bodies.rectangle(1100, 400, 100, 100, {
             friction: 0.01,
-            label: "p2"
-        }); // player 2
+            label: "p2",
+            collisionFilter: {
+                category: PLAYER,
+                mask: PLAYER | GROUND | GHOST
+            }
+        });
 
         let input = []; // track the input(s) the player put in
 
@@ -179,7 +206,7 @@
 
             movementTime += event.delta; // add milliseconds since last tick; delta is time since last tick in the engine
 
-            if (movementTime >= 1000) { // 1 second of time has passed
+            if (movementTime >= 500) { // 0.5 seconds of time has passed
                 movementPhase = false;
                 runner.enabled = false; // pause engine EXACTLY on time
             }
@@ -336,7 +363,7 @@
         // });
 
         // Add all of the bodies to the world
-        World.add(engine.world, [ground, p1, p2]);
+        World.add(engine.world, [groundHitbox, ground, p1, p2]);
 
         // Run the engine
         Runner.run(runner, engine);
