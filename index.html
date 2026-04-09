@@ -148,7 +148,7 @@
 
         const keys = {}; // Track which keys are down
 
-        var pCurrent = p1
+        var pCurrent = p2
         var winner = " " // to track who won the round and prevent winenr from changing if other player falls off after
         var spacePressed = false; // to prevent pressing space from swapping `pCurrent` every tick
         let run = false; // variable to pause/start engine
@@ -176,49 +176,60 @@
             let currentOnHead   = pCurrent.label == "p1" ? p1OnHead   : p2OnHead;
 
             // up
-            if (event.code === "ArrowUp" && (currentGrounded || currentOnHead)) {
+            if (event.code == "ArrowUp" && (currentGrounded || currentOnHead)) {
 
                 input = input.filter(x => x !== "down"); // remove opposite
 
                 if (currentOnHead) {
-                    if (!input.includes("jumpOnHead")) {
-                        input.push("jumpOnHead");
+                    // clear all other inputs if same input pressed multiple times
+                    if (input.includes("jumpOnHead")) {
+                        input = []
                     }
+                    input.push("jumpOnHead");
+
                 } else {
-                    if (!input.includes("jump")) {
-                        input.push("jump");
+                    // clear all other inputs if same input pressed multiple times
+                    if (input.includes("jump")) {
+                        input = [];
                     }
+                    input.push("jump");
                 }
             }
 
             // down
-            if (event.code === "ArrowDown") {
+            if (event.code == "ArrowDown") {
 
                 input = input.filter(x => x !== "jump" && x !== "jumpOnHead"); // remove opposite
 
-                if (!input.includes("down")) {
-                    input.push("down");
+                // clear all other inputs if same input pressed multiple times
+                if (input.includes("down")) {
+                    input = [];
                 }
+                input.push("down");
             }
 
             // left
-            if (event.code === "ArrowLeft") {
+            if (event.code == "ArrowLeft") {
 
                 input = input.filter(x => x !== "right"); // remove opposite
 
-                if (!input.includes("left")) {
-                    input.push("left");
+                // clear all other inputs if same input pressed multiple times
+                if (input.includes("left")) {
+                    input = [];
                 }
+                input.push("left");
             }
 
             // right
-            if (event.code === "ArrowRight") {
+            if (event.code == "ArrowRight") {
 
                 input = input.filter(x => x !== "left"); // remove opposite
 
-                if (!input.includes("right")) {
-                    input.push("right");
+                // clear all other inputs if same input pressed multiple times
+                if (input.includes("right")) {
+                    input = [];
                 }
+                input.push("right");
             }
 
             // Update UI
@@ -226,7 +237,7 @@
                 "Action: " + input.join(" + ");
 
             // Ending turn/starting next turn
-            if (keys["Space"] && !spacePressed) {
+            if (event.code == "Space" && !spacePressed) {
                 spacePressed = true; // prevents constant toggling
                 if (pCurrent == p1) {
                     pCurrent = p2;
