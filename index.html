@@ -82,6 +82,11 @@
         let movementPhase = false;
         let movementTime = 0;
 
+        // to keep track of if both players have puyt in their inputs
+        let p1Ready = false;
+        let p2Ready = false;
+
+
         // checks if current player is touching the ground
         let p1OnGround = false;
         let p2OnGround = false;
@@ -176,8 +181,9 @@
                 mask: PLAYER | GROUND | GHOST
             }
         });
-
-        let input = []; // track the input(s) the player put in
+        // track the input(s) the players put in
+        let p1Input = [];
+        let p2Input = [];
 
         const keys = {}; // Track which keys are down
 
@@ -218,83 +224,23 @@
             if (event.code == "Space" && !spacePressed) {
                 spacePressed = true; // prevents constant toggling
                 if (pCurrent == p1) {
-                    pCurrent = p2;
+                    p1Ready = true;
+                    pCurrent = p2; // swap to p1 input phase
+                    startCountDown(); // start the timer again 
                 }
                 else if (pCurrent == p2) {
-                    pCurrent = p1;
+                    p2Ready = true;
+                    pCurrent = p1; // swap to p1 input phase; movement phase happens first
+                    startCountDown(); // start the timer again 
                 }
 
-                // reset inputs when next turn starts
-                input = [];
                 document.getElementById("displayAction").innerText = "Action: ";
-
-                startCountDown(); // start the timer again 
                 return; // to help prevent errors related to changing turns
             }
 
             if (movementPhase) return; // prevent inputs during the movement phase
 
-            let currentGrounded = pCurrent.label == "p1" ? p1OnGround : p2OnGround;
-            let currentOnHead   = pCurrent.label == "p1" ? p1OnHead   : p2OnHead;
-
-            // up
-            if (event.code == "ArrowUp" && (currentGrounded || currentOnHead)) {
-
-                input = input.filter(x => x !== "down"); // remove opposite
-
-                if (currentOnHead) {
-                    // clear all other inputs if same input pressed multiple times
-                    if (input.includes("jumpOnHead")) {
-                        input = []
-                    }
-                    input.push("jumpOnHead");
-
-                } else {
-                    // clear all other inputs if same input pressed multiple times
-                    if (input.includes("jump")) {
-                        input = [];
-                    }
-                    input.push("jump");
-                }
-            }
-
-            // down
-            if (event.code == "ArrowDown") {
-
-                input = input.filter(x => x !== "jump" && x !== "jumpOnHead"); // remove opposite
-
-                // clear all other inputs if same input pressed multiple times
-                if (input.includes("down")) {
-                    input = [];
-                }
-                input.push("down");
-            }
-
-            // left
-            if (event.code == "ArrowLeft") {
-
-                input = input.filter(x => x !== "right"); // remove opposite
-
-                // clear all other inputs if same input pressed multiple times
-                if (input.includes("left")) {
-                    input = [];
-                }
-                input.push("left");
-            }
-
-            // right
-            if (event.code == "ArrowRight") {
-
-                input = input.filter(x => x !== "left"); // remove opposite
-
-                // clear all other inputs if same input pressed multiple times
-                if (input.includes("right")) {
-                    input = [];
-                }
-                input.push("right");
-            }
-
-            document.getElementById("displayAction").innerText = "Action: " + input.join(" + "); // Update UI
+            inputFunction(pCurrent == p1 ? p1Input : p2Input, event); // runs the function for p1/p2 depending on which one is the current player
         });
   
         // for pausing
@@ -310,10 +256,9 @@
                     document.getElementById("displayTimer").innerText = countDown.toFixed(2) + "s";
                     // console.log(countDown) // for testing
                 } else {
-                    runInputs() // apply movement when input phase is over
-                    movementPhase = true; // start tracking physics time
-                    movementTime = 0; // reset timer
-                    runner.enabled = true; // allow movement
+                    if (p1Ready && p2Ready){
+                        startMovementPhase() // apply movement when input phase is over
+                    }
 
                     countDown = 5;
                     clearInterval(countDownStored);
@@ -324,29 +269,131 @@
             }, 10);
         }
 
-        function runInputs() {
-            const forceMagnitude = 0.25; // amount of force when key is pressed
+        function inputFunction(playerInputs, event){
+            const currentGrounded = (pCurrent == p1) ? p1OnGround : p2OnGround;
+            const currentOnHead   = (pCurrent == p1) ? p1OnHead   : p2OnHead;
+                
+            // up
+            if (event.code == "ArrowUp" && (currentGrounded || currentOnHead)) {
 
-            let currentOnHead = pCurrent.label == "p1" ? p1OnHead : p2OnHead // checks which is current object
+                playerInputs = playerInputs.filter(x => x !== "down"); // remove opposite
+
+                if (currentOnHead) {
+                    // clear all other inputs if same input pressed multiple times
+                    if (playerInputs.includes("jumpOnHead")) {
+                        playerInputs = []
+                    }
+                    if (pCurrent == p1) {
+                        p1Input.push("jumpOnHead");
+                    } else {
+                        p2Input.push("jumpOnHead");
+                    }
+
+                } else {
+                    // clear all other inputs if same input pressed multiple times
+                    if (playerInputs.includes("jump")) {
+                        playerInputs = [];
+                    }
+                    if (pCurrent == p1) {
+                        p1Input.push("jump");
+                    } else {
+                        p2Input.push("jump");
+                    }
+                }
+            }
+
+            // down
+            if (event.code == "ArrowDown") {
+
+                playerInputs = playerInputs.filter(x => x !== "jump" && x !== "jumpOnHead"); // remove opposite
+
+                // clear all other inputs if same input pressed multiple times
+                if (playerInputs.includes("down")) {
+                    playerInputs = [];
+                }
+                if (pCurrent == p1) {
+                    p1Input.push("down");
+                } else {
+                    p2Input.push("down");
+                }
+            }
+
+            // left
+            if (event.code == "ArrowLeft") {
+
+                playerInputs = playerInputs.filter(x => x !== "right"); // remove opposite
+
+                // clear all other inputs if same input pressed multiple times
+                if (playerInputs.includes("left")) {
+                    playerInputs = [];
+                }
+                if (pCurrent == p1) {
+                    p1Input.push("left");
+                } else {
+                    p2Input.push("left");
+                }
+            }
+
+            // right
+            if (event.code == "ArrowRight") {
+
+                playerInputs = playerInputs.filter(x => x !== "left"); // remove opposite
+
+                // clear all other inputs if same input pressed multiple times
+                if (playerInputs.includes("right")) {
+                    playerInputs = [];
+                }
+                if (pCurrent == p1) {
+                    p1Input.push("right");
+                } else {
+                    p2Input.push("right");
+                }
+            }
+
+            document.getElementById("displayAction").innerText = "Action: " + playerInputs.join(" + "); // Update UI
+        }
+
+        function startMovementPhase() {
+            // run the inputs for both players
+            runInputs(p1, p1Input);
+            runInputs(p2, p2Input);
+
+            movementPhase = true; // start tracking physics time
+            movementTime = 0; // reset timer
+            runner.enabled = true; // allow movement
+
+            // reset for next turn
+            p1Ready = false;
+            p2Ready = false;
+
+            // clear inputs
+            p1Input = [];
+            p2Input = [];
+        }
+
+        function runInputs(player, input) {
+            const forceMagnitude = 0.25; // amount of force when key is pressed
+            
+            let currentOnHead = player.label == "p1" ? p1OnHead : p2OnHead // checks which is current object
 
             if (input.includes("jump") || input.includes("jumpOnHead")) {
-                Body.applyForce(pCurrent, pCurrent.position, { x: 0, y: -2 * forceMagnitude });
-                if(currentOnHead && (pCurrent == p1)){
+                Body.applyForce(player, player.position, { x: 0, y: -2 * forceMagnitude });
+                if(currentOnHead && (player == p1)){
                     Body.applyForce(p2, p2.position, {x: 0, y: forceMagnitude});
                 }
-                else if(currentOnHead && (pCurrent == p2)){
+                else if(currentOnHead && (player == p2)){
                     Body.applyForce(p1, p1.position, {x: 0, y: forceMagnitude});
                 }
             }
 
             if (input.includes("down")) {
-                Body.applyForce(pCurrent, pCurrent.position, { x: 0, y: forceMagnitude });
+                Body.applyForce(player, player.position, { x: 0, y: forceMagnitude });
             }
             if (input.includes("left")) {
-                Body.applyForce(pCurrent, pCurrent.position, { x: -forceMagnitude, y: 0 });
+                Body.applyForce(player, player.position, { x: -forceMagnitude, y: 0 });
             }
             if (input.includes("right")) {
-                Body.applyForce(pCurrent, pCurrent.position, { x: forceMagnitude, y: 0 });
+                Body.applyForce(player, player.position, { x: forceMagnitude, y: 0 });
             }
         }
     
