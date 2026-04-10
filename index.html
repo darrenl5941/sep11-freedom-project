@@ -212,7 +212,7 @@
 
             movementTime += event.delta; // add milliseconds since last tick; delta is time since last tick in the engine
 
-            if (movementTime >= 500) { // 0.5 seconds of time has passed
+            if (movementTime >= 750) { // 0.75 seconds of time has passed
                 movementPhase = false;
                 runner.enabled = false; // pause engine EXACTLY on time
             }
@@ -379,9 +379,35 @@
             }
             if (input.includes("left")) {
                 Body.applyForce(player, player.position, { x: -forceMagnitude, y: 0 });
+                // bonus horizontal movement for moving down
+                if(input.includes("down")){
+                    Body.applyForce(player, player.position, { x: -0.25 * forceMagnitude, y: 0 });
+                }
+                // push player in opposite direction if jumping on head
+                if(input.includes("jumpOnHead")){
+                    if(player == p1){
+                        Body.applyForce(p2, p2.position, { x: 1.25 * forceMagnitude, y: 0 });
+                    } 
+                    if(player == p2){
+                        Body.applyForce(p1, p1.position, { x: 1.25 * forceMagnitude, y: 0 });
+                    }                      
+                }
             }
             if (input.includes("right")) {
                 Body.applyForce(player, player.position, { x: forceMagnitude, y: 0 });
+                // bonus horizontal movement for moving down
+                if(input.includes("down")){
+                    Body.applyForce(player, player.position, { x: 0.25 * forceMagnitude, y: 0 });
+                }
+                // push player in opposite direction if jumping on head
+                if(input.includes("jumpOnHead")){
+                    if(player == p1){
+                        Body.applyForce(p2, p2.position, { x: -1.25 * forceMagnitude, y: 0 });
+                    } 
+                    if(player == p2){
+                        Body.applyForce(p1, p1.position, { x: -1.25 * forceMagnitude, y: 0 });
+                    }  
+                }
             }
         }
     
