@@ -269,87 +269,75 @@
             }, 10);
         }
 
-        function inputFunction(playerInputs, event){
+        function inputFunction(playerInputs, event) {
             const currentGrounded = (pCurrent == p1) ? p1OnGround : p2OnGround;
             const currentOnHead   = (pCurrent == p1) ? p1OnHead   : p2OnHead;
-                
-            // up
-            if (event.code == "ArrowUp" && (currentGrounded || currentOnHead)) {
 
-                playerInputs = playerInputs.filter(x => x !== "down"); // remove opposite
+            // Up
+            if (event.code == "ArrowUp" && (currentGrounded || currentOnHead)) {
+                // remove down
+                const withoutDown = playerInputs.filter(x => x !== "down"); // remake copy of array
+                playerInputs.length = 0; // empty array
+                playerInputs.push(...withoutDown); // add back the copy of the array to the normal array; the `...` splits the array into individual arguments
 
                 if (currentOnHead) {
-                    // clear all other inputs if same input pressed multiple times
+                    // if jumpOnHead already present, clear array
                     if (playerInputs.includes("jumpOnHead")) {
-                        playerInputs = []
+                        playerInputs.length = 0; // empty array
                     }
-                    if (pCurrent == p1) {
-                        p1Input.push("jumpOnHead");
-                    } else {
-                        p2Input.push("jumpOnHead");
-                    }
-
+                    playerInputs.push("jumpOnHead"); // add jumpOnHead
                 } else {
-                    // clear all other inputs if same input pressed multiple times
+                    // if jump already present, clear array
                     if (playerInputs.includes("jump")) {
-                        playerInputs = [];
+                        playerInputs.length = 0; // empty array
                     }
-                    if (pCurrent == p1) {
-                        p1Input.push("jump");
-                    } else {
-                        p2Input.push("jump");
-                    }
+                    playerInputs.push("jump"); // add jump
                 }
             }
 
-            // down
+            // Down
             if (event.code == "ArrowDown") {
+                // remove jump and jumpOnHead
+                const withoutJumps = playerInputs.filter(x => x !== "jump" && x !== "jumpOnHead"); // remake copy of array
+                playerInputs.length = 0; // empty array
+                playerInputs.push(...withoutJumps); // add back the copy of the array to the normal array; the `...` splits the array into individual arguments
 
-                playerInputs = playerInputs.filter(x => x !== "jump" && x !== "jumpOnHead"); // remove opposite
-
-                // clear all other inputs if same input pressed multiple times
+                // if down already present, clear array
                 if (playerInputs.includes("down")) {
-                    playerInputs = [];
+                    playerInputs.length = 0; // empty array
                 }
-                if (pCurrent == p1) {
-                    p1Input.push("down");
-                } else {
-                    p2Input.push("down");
-                }
+                playerInputs.push("down"); // add down
             }
 
-            // left
+            // Left
             if (event.code == "ArrowLeft") {
+                // remove right
+                const withoutRight = playerInputs.filter(x => x !== "right"); // remake copy of array
+                playerInputs.length = 0; // empty array
+                playerInputs.push(...withoutRight); // add back the copy of the array to the normal array; the `...` splits the array into individual arguments
 
-                playerInputs = playerInputs.filter(x => x !== "right"); // remove opposite
-
-                // clear all other inputs if same input pressed multiple times
+                // if left already present, clear array
                 if (playerInputs.includes("left")) {
-                    playerInputs = [];
+                    playerInputs.length = 0; // empty array
                 }
-                if (pCurrent == p1) {
-                    p1Input.push("left");
-                } else {
-                    p2Input.push("left");
-                }
+                playerInputs.push("left"); // add left
             }
 
-            // right
+            // Right
             if (event.code == "ArrowRight") {
+                // remove left
+                const withoutLeft = playerInputs.filter(x => x !== "left"); // remake copy of array
+                playerInputs.length = 0; // empty array
+                playerInputs.push(...withoutLeft); // add back the copy of the array to the normal array; the `...` splits the array into individual arguments
 
-                playerInputs = playerInputs.filter(x => x !== "left"); // remove opposite
-
-                // clear all other inputs if same input pressed multiple times
+                // if right already present, clear array
                 if (playerInputs.includes("right")) {
-                    playerInputs = [];
+                    playerInputs.length = 0; // empty array
                 }
-                if (pCurrent == p1) {
-                    p1Input.push("right");
-                } else {
-                    p2Input.push("right");
-                }
+                playerInputs.push("right"); // add right
             }
 
+            // Update UI from the authoritative array
             document.getElementById("displayAction").innerText = "Action: " + playerInputs.join(" + "); // Update UI
         }
 
