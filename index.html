@@ -106,9 +106,19 @@
                 // on other's head checks
                 if (labels.includes("p1") && labels.includes("p2") && (p1.position.y < p2.position.y)){
                     p1OnHead = true;
+                    // // stomping mechanic
+                    // if (phase === "movement" && p1Input.inlcudes("down")) {
+                    //     Body.setDensity(p2, p2.density * 0.9);
+                    //     Body.scale(p2, 0.95, 0.95); // size change (also affects density/weight)
+                    // }
                 }
                 if (labels.includes("p2") && labels.includes("p1") && (p2.position.y < p1.position.y)){
                     p2OnHead = true;
+                    // // stomping mechanic
+                    // if (phase === "movement" && p2Input.inlcudes("down")) {
+                    //     Body.setDensity(p1, p1.density * 0.9); // density or weight change
+                    //     Body.scale(p1, 0.95, 0.95); // size change (also affects density/weight)
+                    // }
                 }
             }); 
         });
@@ -173,7 +183,7 @@
         });
 
         // player 2
-        var p2 = Bodies.rectangle(1100, 400, 100, 100, {
+        var p2 = Bodies.rectangle(250, 400, 100, 100, {
             friction: 0.01,
             label: "p2",
             collisionFilter: {
