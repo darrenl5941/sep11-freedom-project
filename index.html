@@ -187,9 +187,10 @@
 
         const keys = {}; // Track which keys are down
 
-        var pCurrent = p2
+        var pCurrent = p1;
         var winner = " " // to track who won the round and prevent winenr from changing if other player falls off after
         var spacePressed = false; // to prevent pressing space from swapping `pCurrent` every tick
+        let phase = "input"; // to keep track of phase and help prevent the bug with movement phase starting immideiatley after p2's input phase ends
         let run = false; // variable to pause/start engine
 
         // Apply movement each tick
@@ -223,15 +224,22 @@
             // Ending turn/starting next turn
             if (event.code == "Space" && !spacePressed) {
                 spacePressed = true; // prevents constant toggling
-                if (pCurrent == p1) {
-                    p1Ready = true;
-                    pCurrent = p2; // swap to p1 input phase
-                    startCountDown(); // start the timer again 
+
+                // If both players are ready, Space starts the movement phase
+                if (p1Ready && p2Ready && countDownStored == null) {
+                    startMovementPhase();
+
+                    // Reset for next round
+                    p1Ready = false;
+                    p2Ready = false;
+                    pCurrent = p1; // or whoever starts next round
+                    spacePressed = false;
+                    return; // prevent count down phase
                 }
-                else if (pCurrent == p2) {
-                    p2Ready = true;
-                    pCurrent = p1; // swap to p1 input phase; movement phase happens first
-                    startCountDown(); // start the timer again 
+
+                if (countDownStored == null) {
+                    countdownFor = pCurrent;
+                    startCountDown();
                 }
 
                 document.getElementById("displayAction").innerText = "Action: ";
@@ -256,17 +264,27 @@
                     document.getElementById("displayTimer").innerText = countDown.toFixed(2) + "s";
                     // console.log(countDown) // for testing
                 } else {
-                    if (p1Ready && p2Ready){
-                        startMovementPhase() // apply movement when input phase is over
-                    }
+                    finishCountdown();
 
                     countDown = 5;
                     clearInterval(countDownStored);
                     countDownStored = null; // allow the function to run again
-                    spacePressed = false; // allow space to be pressed again
-                    document.getElementById("displayTimer").innerText = "0.00 s";                    
+                    document.getElementById("displayTimer").innerText = "0.00 s";
+                    document.getElementById("displayAction").innerText = "Action: "; // prevent pervious players actions from being displayed if timer is up              
                 }
             }, 10);
+        }
+
+        function finishCountdown() {
+            if (countdownFor == p1) {
+                p1Ready = true;
+            } 
+            else {
+                p2Ready = true;
+            }
+
+            pCurrent = (pCurrent == p1) ? p2 : p1;
+            spacePressed = false; // allow Space to be pressed again
         }
 
         function inputFunction(playerInputs, event) {
@@ -353,6 +371,7 @@
             // reset for next turn
             p1Ready = false;
             p2Ready = false;
+            phase = "input"; // go back to input phases
 
             // clear inputs
             p1Input = [];
