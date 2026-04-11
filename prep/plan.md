@@ -16,16 +16,18 @@
   - [X] Prevent inputs from happening when not paused (deadline: 3/30)
 - [X] Make match end when one player is knocked off (deadline: 3/30) <!-- allow player to still move around -->
   - [X] Make it show who won on screen (deadline: 3/30)
+- [X] Fix bugs (deadline: 4/11)
 
 <!-- - [ ] Task (deadline: X)
   - [ ] Subtask (deadline: X) -->
 
 #### Beyond MVP
 
-- [ ] Add different moves other than just basic movement
-  - [ ] Balancing
+- [X] Add more minor interactions between combining different basic movement options
 - [ ] Create size/density changes for damage
 - [ ] Add preview/indicator for what each action will do <!-- current player needs to stay there but new one needs to have a looping animation with same element without multiple stacking on eachother -->
+- [ ] Add different moves other than just basic movement
+  - [ ] Balancing
 - [ ] Add sound effects for collisions
 - [ ] Make camera track on players or movable camera
 - [ ] Add different shapes/characters with different moves

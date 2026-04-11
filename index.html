@@ -168,7 +168,8 @@
             collisionFilter: {
                 category: GHOST,
                 mask: PLAYER // collide with nothing, but still triggers events with players
-            }
+            },
+            render: {visible: false} // make the body invisible 
         });
 
         // player 1
@@ -178,7 +179,6 @@
             collisionFilter: {
                 category: PLAYER,
                 mask: PLAYER | GROUND | GHOST
-
             }
         });
 
@@ -189,7 +189,8 @@
              collisionFilter: {
                 category: GHOST,
                 mask: PLAYER // only collide with real player
-            }
+            },
+            render: {visible: false} // make the body invisible 
         });
 
         // player 2
@@ -209,7 +210,8 @@
              collisionFilter: {
                 category: GHOST,
                 mask: PLAYER // only collide with real player
-            }
+            },
+            render: {visible: false} // make the body invisible 
         });
 
         // track the input(s) the players put in
@@ -483,7 +485,7 @@
         // });
 
         // Add all of the bodies to the world
-        World.add(engine.world, [groundHitbox, ground, p1Sensor, p2Sensor, p1, p2]);
+        World.add(engine.world, [groundHitbox, p1Sensor, p2Sensor, ground, p1, p2]);
 
         // Run the engine
         Runner.run(runner, engine);
