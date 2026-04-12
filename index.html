@@ -95,6 +95,9 @@
         Matter.Events.on(engine, "collisionStart", (event) => {
             event.pairs.forEach(({ bodyA, bodyB }) => {
                 const labels = [bodyA.label, bodyB.label];
+
+                if (labels.includes("p1Sensor") && labels.includes("p2Sensor")) {return;} // prevent collisions between the 2 sensors for both players
+
                 // ground checks
                 if ((labels.includes("p1") || labels.includes("p1Sensor")) && labels.includes("ground")) {
                     p1OnGround = true;
@@ -104,21 +107,27 @@
                 }
 
                 // on other's head checks
-                if ((labels.includes("p1") || labels.includes("p1Sensor")) && labels.includes("p2") && (p1.position.y < p2.position.y)) {
+                if ((labels.includes("p1Sensor")) && labels.includes("p2") && (p1.position.y < p2.position.y)) {
+                    console.log("1.1")
                     p1OnHead = true;
-                    // // stomping mechanic
-                    // if (phase === "movement" && p1Input.inlcudes("down")) {
-                    //     Body.setDensity(p2, p2.density * 0.9);
-                    //     Body.scale(p2, 0.95, 0.95); // size change (also affects density/weight)
-                    // }
+                    // stomping mechanic
+                    if (phase === "movement" && p1Input.includes("down")) {
+                        console.log("2.1")
+                        Body.setDensity(p2, p2.density * 0.95);
+                        Body.scale(p2, 0.90, 0.90); // size change (also affects density/weight)
+                        Body.scale(p2Sensor, 0.90, 0.90); 
+                    }
                 }
-                if ((labels.includes("p2") || labels.includes("p2Sensor")) && labels.includes("p1") && (p2.position.y < p1.position.y)) {
+                if ((labels.includes("p2Sensor")) && labels.includes("p1") && (p2.position.y < p1.position.y)) {
+                    console.log("1.2")
                     p2OnHead = true;
-                    // // stomping mechanic
-                    // if (phase === "movement" && p2Input.inlcudes("down")) {
-                    //     Body.setDensity(p1, p1.density * 0.9); // density or weight change
-                    //     Body.scale(p1, 0.95, 0.95); // size change (also affects density/weight)
-                    // }
+                    // stomping mechanic
+                    if (phase === "movement" && p2Input.includes("down")) {
+                        console.log("2.2")
+                        Body.setDensity(p1, p1.density * 0.95); // density or weight change
+                        Body.scale(p1, 0.90, 0.90); // size change (also affects density/weight)
+                        Body.scale(p1Sensor, 0.90, 0.90); 
+                    }
                 }
             }); 
         });
@@ -128,10 +137,10 @@
                 const labels = [bodyA.label, bodyB.label];
 
                 // ground checks
-                if (labels.includes("p1") && labels.includes("ground")) {
+                if (labels.includes("p1") && labels.includes("groundSensor")) {
                     p1OnGround = false;
                 }
-                if (labels.includes("p2") && labels.includes("ground")) {
+                if (labels.includes("p2") && labels.includes("groundSensor")) {
                     p2OnGround = false;
                 }
 
@@ -156,6 +165,7 @@
         // ground
         var ground = Bodies.rectangle(675, 500, 1000, 20, {
             isStatic: true, // isStatic prevents movement
+            label: "ground",
             collisionFilter: {
                 category: GROUND,
                 mask: PLAYER // players collide with ground
@@ -163,7 +173,7 @@
         }); 
         var groundHitbox = Bodies.rectangle(675, 490, 1050, 50, { // for jumping
             isStatic: true,
-            label: "ground",
+            label: "groundSensor",
             isSensor: true, // allows to still detect collisions without actually colliding
             collisionFilter: {
                 category: GHOST,
@@ -182,17 +192,6 @@
             }
         });
 
-        var p1Sensor = Bodies.rectangle(250, 400, 140, 140, {
-            label: "p1Sensor",
-            isStatic: true, // prevent sensor from sliding down
-            isSensor: true, // allows to still detect collisions without actually colliding 
-             collisionFilter: {
-                category: GHOST,
-                mask: PLAYER // only collide with real player
-            },
-            render: {visible: false} // make the body invisible 
-        });
-
         // player 2
         var p2 = Bodies.rectangle(1100, 400, 100, 100, {
             friction: 0.01,
@@ -203,20 +202,40 @@
             }
         });
 
-        var p2Sensor = Bodies.rectangle(1100, 400, 140, 140, {
-            label: "p2Sensor",
-            isStatic: true, // prevent sensor from sliding down
+        // player 1 sensor
+        var p1Sensor = Bodies.rectangle(250, 400, 140, 140, {
+            label: "p1Sensor",
             isSensor: true, // allows to still detect collisions without actually colliding 
              collisionFilter: {
                 category: GHOST,
                 mask: PLAYER // only collide with real player
             },
+            // to prevent sensor bodies from sliding down the screen
+            inertia: Infinity,
+            frictionAir: 0,
+
+            render: {visible: false} // make the body invisible 
+        });
+
+        // player 2 sensor
+        var p2Sensor = Bodies.rectangle(1100, 400, 140, 140, {
+            label: "p2Sensor",
+            isSensor: true, // allows to still detect collisions without actually colliding 
+             collisionFilter: {
+                category: GHOST,
+                mask: PLAYER // only collide with real player
+            },
+            // to prevent sensor bodies from sliding down the screen
+            inertia: Infinity,
+            frictionAir: 0,
+            
             render: {visible: false} // make the body invisible 
         });
 
         // track the input(s) the players put in
         let p1Input = [];
         let p2Input = [];
+
 
         const keys = {}; // Track which keys are down
 
@@ -229,13 +248,18 @@
         // Apply movement each tick
         Matter.Events.on(engine, "beforeUpdate", (event) => {
 
-            // update `p1Sensor` to `p1` position
+            // update `p1Sensor` to `p1` position & prevent it from offsetting itself from velocity
             Body.setPosition(p1Sensor, p1.position);
             Body.setAngle(p1Sensor, p1.angle);
+            Body.setVelocity(p1Sensor, { x: 0, y: 0 });
+            Body.setAngularVelocity(p1Sensor, 0);
 
-            // update `p2Sensor` to `p2` position
+
+            // update `p2Sensor` to `p2` position & prevent it from offsetting itself from velocity
             Body.setPosition(p2Sensor, p2.position);
             Body.setAngle(p2Sensor, p2.angle);
+            Body.setVelocity(p2Sensor, { x: 0, y: 0 });
+            Body.setAngularVelocity(p2Sensor, 0);
 
             // end game
             if(p1.position.y > 800 && winner != "p1"){
@@ -258,6 +282,18 @@
             if (movementTime >= 750) { // 0.75 seconds of time has passed
                 movementPhase = false;
                 runner.enabled = false; // pause engine EXACTLY on time
+
+                // Reset for next round
+                p1Ready = false;
+                p2Ready = false;
+                pCurrent = p1; // or whoever starts next round
+                spacePressed = false;
+                phase = "input"; // go back to input phases
+                // clear inputs
+                p1Input = [];
+                p2Input = [];
+
+                movementTime = 0; // reset timer
             }
         });
 
@@ -270,12 +306,6 @@
                 // If both players are ready, Space starts the movement phase
                 if (p1Ready && p2Ready && countDownStored == null) {
                     startMovementPhase();
-
-                    // Reset for next round
-                    p1Ready = false;
-                    p2Ready = false;
-                    pCurrent = p1; // or whoever starts next round
-                    spacePressed = false;
                     return; // prevent count down phase
                 }
 
@@ -409,15 +439,7 @@
             movementPhase = true; // start tracking physics time
             movementTime = 0; // reset timer
             runner.enabled = true; // allow movement
-
-            // reset for next turn
-            p1Ready = false;
-            p2Ready = false;
-            phase = "input"; // go back to input phases
-
-            // clear inputs
-            p1Input = [];
-            p2Input = [];
+            phase = "movement"; // change to movement phase
         }
 
         function runInputs(player, input) {
@@ -426,7 +448,7 @@
             let currentOnHead = player.label == "p1" ? p1OnHead : p2OnHead // checks which is current object
 
             if (input.includes("jump") || input.includes("jumpOnHead")) {
-                Body.applyForce(player, player.position, { x: 0, y: -2 * forceMagnitude });
+                Body.applyForce(player, player.position, { x: 0, y: -2 * forceMagnitude});
                 if(currentOnHead && (player == p1)){
                     Body.applyForce(p2, p2.position, {x: 0, y: forceMagnitude});
                 }
