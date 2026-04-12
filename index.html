@@ -108,22 +108,18 @@
 
                 // on other's head checks
                 if ((labels.includes("p1Sensor")) && labels.includes("p2") && (p1.position.y < p2.position.y)) {
-                    console.log("1.1")
                     p1OnHead = true;
                     // stomping mechanic
                     if (phase === "movement" && p1Input.includes("down")) {
-                        console.log("2.1")
                         Body.setDensity(p2, p2.density * 0.95);
                         Body.scale(p2, 0.90, 0.90); // size change (also affects density/weight)
                         Body.scale(p2Sensor, 0.90, 0.90); 
                     }
                 }
                 if ((labels.includes("p2Sensor")) && labels.includes("p1") && (p2.position.y < p1.position.y)) {
-                    console.log("1.2")
                     p2OnHead = true;
                     // stomping mechanic
                     if (phase === "movement" && p2Input.includes("down")) {
-                        console.log("2.2")
                         Body.setDensity(p1, p1.density * 0.95); // density or weight change
                         Body.scale(p1, 0.90, 0.90); // size change (also affects density/weight)
                         Body.scale(p1Sensor, 0.90, 0.90); 
@@ -191,6 +187,7 @@
                 mask: PLAYER | GROUND | GHOST
             }
         });
+        console.log(p1.density)
 
         // player 2
         var p2 = Bodies.rectangle(1100, 400, 100, 100, {
@@ -444,51 +441,52 @@
 
         function runInputs(player, input) {
             const forceMagnitude = 0.25; // amount of force when key is pressed
+            const forceScale = forceMagnitude * player.density * 1000 // multiplied by 100 because starting standard density for objects is 0.001
             
             let currentOnHead = player.label == "p1" ? p1OnHead : p2OnHead // checks which is current object
 
             if (input.includes("jump") || input.includes("jumpOnHead")) {
-                Body.applyForce(player, player.position, { x: 0, y: -2 * forceMagnitude});
+                Body.applyForce(player, player.position, { x: 0, y: -2 * forceScale });
                 if(currentOnHead && (player == p1)){
-                    Body.applyForce(p2, p2.position, {x: 0, y: forceMagnitude});
+                    Body.applyForce(p2, p2.position, {x: 0, y: forceScale});
                 }
                 else if(currentOnHead && (player == p2)){
-                    Body.applyForce(p1, p1.position, {x: 0, y: forceMagnitude});
+                    Body.applyForce(p1, p1.position, {x: 0, y: forceScale});
                 }
             }
 
             if (input.includes("down")) {
-                Body.applyForce(player, player.position, { x: 0, y: forceMagnitude });
+                Body.applyForce(player, player.position, { x: 0, y: forceScale });
             }
             if (input.includes("left")) {
-                Body.applyForce(player, player.position, { x: -forceMagnitude, y: 0 });
+                Body.applyForce(player, player.position, { x: -forceScale, y: 0 });
                 // bonus horizontal movement for moving down
                 if(input.includes("down")){
-                    Body.applyForce(player, player.position, { x: -0.25 * forceMagnitude, y: 0 });
+                    Body.applyForce(player, player.position, { x: -0.25 * forceScale, y: 0 });
                 }
                 // push player in opposite direction if jumping on head
                 if(input.includes("jumpOnHead")){
                     if(player == p1){
-                        Body.applyForce(p2, p2.position, { x: 1.25 * forceMagnitude, y: 0 });
+                        Body.applyForce(p2, p2.position, { x: 1.25 * forceScale, y: 0 });
                     } 
                     if(player == p2){
-                        Body.applyForce(p1, p1.position, { x: 1.25 * forceMagnitude, y: 0 });
+                        Body.applyForce(p1, p1.position, { x: 1.25 * forceScale, y: 0 });
                     }                      
                 }
             }
             if (input.includes("right")) {
-                Body.applyForce(player, player.position, { x: forceMagnitude, y: 0 });
+                Body.applyForce(player, player.position, { x: forceScale, y: 0 });
                 // bonus horizontal movement for moving down
                 if(input.includes("down")){
-                    Body.applyForce(player, player.position, { x: 0.25 * forceMagnitude, y: 0 });
+                    Body.applyForce(player, player.position, { x: 0.25 * forceScale, y: 0 });
                 }
                 // push player in opposite direction if jumping on head
                 if(input.includes("jumpOnHead")){
                     if(player == p1){
-                        Body.applyForce(p2, p2.position, { x: -1.25 * forceMagnitude, y: 0 });
+                        Body.applyForce(p2, p2.position, { x: -1.25 * forceScale, y: 0 });
                     } 
                     if(player == p2){
-                        Body.applyForce(p1, p1.position, { x: -1.25 * forceMagnitude, y: 0 });
+                        Body.applyForce(p1, p1.position, { x: -1.25 * forceScale, y: 0 });
                     }  
                 }
             }
