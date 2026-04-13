@@ -111,7 +111,7 @@
                     p1OnHead = true;
                     // stomping mechanic
                     if (phase === "movement" && p1Input.includes("down")) {
-                        Body.setDensity(p2, p2.density * 0.95);
+                        Body.setDensity(p2, p2.density * 0.90);
                         Body.scale(p2, 0.90, 0.90); // size change (also affects density/weight)
                         Body.scale(p2Sensor, 0.90, 0.90); 
                     }
@@ -120,7 +120,7 @@
                     p2OnHead = true;
                     // stomping mechanic
                     if (phase === "movement" && p2Input.includes("down")) {
-                        Body.setDensity(p1, p1.density * 0.95); // density or weight change
+                        Body.setDensity(p1, p1.density * 0.90); // density or weight change
                         Body.scale(p1, 0.90, 0.90); // size change (also affects density/weight)
                         Body.scale(p1Sensor, 0.90, 0.90); 
                     }
@@ -187,7 +187,6 @@
                 mask: PLAYER | GROUND | GHOST
             }
         });
-        console.log(p1.density)
 
         // player 2
         var p2 = Bodies.rectangle(1100, 400, 100, 100, {
@@ -441,12 +440,12 @@
 
         function runInputs(player, input) {
             const forceMagnitude = 0.25; // amount of force when key is pressed
-            const forceScale = forceMagnitude * player.density * 1000 // multiplied by 100 because starting standard density for objects is 0.001
+            const forceScale = forceMagnitude * player.density * 1000 // multiplied by 1000 because starting standard density for objects is 0.001
             
             let currentOnHead = player.label == "p1" ? p1OnHead : p2OnHead // checks which is current object
 
             if (input.includes("jump") || input.includes("jumpOnHead")) {
-                Body.applyForce(player, player.position, { x: 0, y: -2 * forceScale });
+                Body.applyForce(player, player.position, { x: 0, y: -2 * forceScale});
                 if(currentOnHead && (player == p1)){
                     Body.applyForce(p2, p2.position, {x: 0, y: forceScale});
                 }
