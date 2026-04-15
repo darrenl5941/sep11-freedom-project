@@ -439,8 +439,9 @@
         }
 
         function runInputs(player, input) {
-            const forceMagnitude = 0.25; // amount of force when key is pressed
-            const forceScale = forceMagnitude * player.density * 1000 // multiplied by 1000 because starting standard density for objects is 0.001
+            const forceMagnitude = 0.25; // amount of force when key is pressed; Cold also remove this variable and just put .25 * in forceScale but makes it less easy to read
+            const forceScale = forceMagnitude * player.mass * 0.1
+            console.log(forceScale)
             
             let currentOnHead = player.label == "p1" ? p1OnHead : p2OnHead // checks which is current object
 
