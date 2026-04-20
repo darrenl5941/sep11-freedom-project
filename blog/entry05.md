@@ -46,7 +46,7 @@ Matter.Events.on(engine, "beforeUpdate", (event) => {
 
 The problem with this is that the hixboxes would collide with other objects when I only wanted them to sense when an interaction should be allowed, which is why I also needed to use `collision filters`.
 
-`collision filters` allow me to change which objects are allowed to physically collide with eachother, which when combined with `isSensor: true` allows me to make objects that only detect when object are touching but don't actually collide with anything else. I learned how to use `collision filters` through a [a website about phaser](https://reitgames.com/news/collision-filtering-phaser), which uses a similar collision filter system to _matterJS_ and then using an AI, _copilot_, to help me figure out the small differences in syntax.
+`collision filters` allow me to change which objects are allowed to physically collide with eachother, which when combined with `isSensor: true` allows me to make objects that only detect when object are touching but don't actually collide with anything else. I learned how to use `collision filters` through a [a website about phaser](https://reitgames.com/news/collision-filtering-phaser), which uses a similar collision filter system to _matterJS_ and then using an AI, [copilot](https://copilot.microsoft.com/), to help me figure out the small differences in syntax.
 
 Here is an example of the collision filters:
 
@@ -146,20 +146,22 @@ function runInputs(player, input) {
         Body.applyForce(player, player.position, { x: forceScale, y: 0 });
         // ... other mechanic for down
         // push player in opposite direction if jumping on head
-        if(input.includes("jumpOnHead")){
-            if(player == p1){
-                Body.applyForce(p2, p2.position, { x: -1.25 * forceScale, y: 0 });
-            } 
-            if(player == p2){
-                Body.applyForce(p1, p1.position, { x: -1.25 * forceScale, y: 0 });
-            }  
+        // on other's head checks
+        if ((labels.includes("p1Sensor")) && labels.includes("p2") && (p1.position.y < p2.position.y)) {
+            p1OnHead = true;
+            // stomping mechanic
+            if (phase === "movement" && p1Input.includes("down")) {
+                Body.setDensity(p2, p2.density * 0.90);
+                Body.scale(p2, 0.90, 0.90); // size change (also affects density/weight)
+                Body.scale(p2Sensor, 0.90, 0.90); 
+            }
         }
     }
     // ... same for left except opposite numbers
 }
 ```
 
-Pressing down to mvoe faster just applies an extra force in the horizontal direction you move (left or right) to make it easier to use the next mechanic, shrinking your opponent.
+Pressing down to move faster just applies an extra force in the horizontal direction you move (left or right) to make it easier to use the next mechanic, shrinking your opponent.
 
 ```js
 function runInputs(player, input) {
@@ -193,6 +195,101 @@ Matter.Events.on(engine, "collisionStart", (event) => {
             }); 
         });
 ```
+
+### Skills
+
+#### Debugging
+
+_Debugging_ was one of the things I spent the most time on during the time between the last blog and this one. I had a very large amount of bugs that I had to deal with in this project and most of them would not show in the `console` so I had to manually go and comment out parts of code or use `console.log()` to check which parts were causing the issues like in my `stomping` mechanic which was inside multiple `if` statements and had parts in mutliple different `functions`. Knowing how to debug properly is a very important skill when coding as not knowing how to will cause you to spend a large amount of time trying to figure out issues because you don't know what exactly is causing them.
+
+#### Using AI Properly
+
+Knowing how to use AI properly can help you speed up the progress of what you are trying to do while not taking away from your learning and still allowing you to learn how to prevent issues from happening again. An example of this is using AI, [copilot with their study and learn mode](https://copilot.microsoft.com/), to list off the bugs I needed to solve from most important to least important (while not telling me the direct solution to them) so I knew which I should prioritize first:
+
+```
+🟥 CRITICAL BUGS (Game‑breaking)
+🟥 1. phase was never set to "movement"
+Your stomp logic checks:
+if (phase === "movement" && p1Input.includes("down"))
+
+
+But phase never became "movement" anywhere in your code.
+This made every stomp check always false, no matter what.
+
+🟥 2. Inputs were cleared BEFORE movement started
+Inside your Space handler, you had:
+p1Input = [];
+p2Input = [];
+phase = "input";
+
+
+This happened immediately after calling startMovementPhase().
+So when collisions happened:
+- "down" was already removed
+- stomp could never trigger
+This was the single biggest reason "2.1" and "2.2" never printed.
+
+🟥 3. Movement ended instantly on turn 2+
+Because movementTime was not reset at the end of movement, the next turn saw:
+movementTime >= 750
+
+
+immediately, so movement ended instantly.
+This prevented:
+- collisions
+- stomp
+- physics
+- movement
+from happening at all.
+
+🟧 MAJOR LOGIC BUGS (Breaks turn flow)
+🟧 4. Reset logic was in the wrong place
+You reset:
+- p1Ready
+- p2Ready
+- pCurrent
+- phase
+- p1Input
+- p2Input
+before physics ran.
+This caused:
+- no movement
+- no stomp
+- broken turn order
+- countdown starting at the wrong time
+
+🟧 5. Countdown logic was unreachable
+You had:
+return; // prevent count down phase
+
+if (countDownStored == null) {
+    startCountDown();
+}
+
+
+Everything after return never executed.
+So countdown sometimes didn’t start at all.
+
+🟨 MINOR / SIDE‑EFFECT BUGS (Don’t break stomp but cause weird behavior)
+🟨 6. Sensors were correct, but stomp timing was impossible
+Your collision logic was fine, but because:
+- phase was wrong
+- inputs were cleared
+- movement ended instantly
+the stomp mechanic never had a chance to run.
+
+🟨 7. Density‑scaled forces were too small
+Using:
+forceMagnitude * player.density
+
+
+produced forces like:
+0.00025
+
+which are too tiny to move anything.
+(Not directly related to the stomp bug, but it made movement feel broken.)
+```
+
 
 
 
