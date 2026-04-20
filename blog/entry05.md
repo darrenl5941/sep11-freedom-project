@@ -3,15 +3,15 @@
 
 ### Engineering Design Process (EDP)
 
-I am currently on _part 7_ of the **EDP**, improving as needed. I have already finished the prototype for my project and tested it for bugs while fixing the major ones. I already know what minor issues I need to fix and what I can do to improve my project and what I can do to  go beyond my MVP (_minimal viable project_).
+I am currently on _part 7_ of the **EDP**, improving as needed. I have already finished the prototype for my project and tested it for bugs while fixing the major ones. I already know what minor issues I need to fix and what I can do to improve my project and what I can do to go beyond my MVP (_minimal viable project_).
 
 ### How I Finished My MVP (Minimum Viable Project)
 
 I have finished my [MVP](https://github.com/darrenl5941/sep11-freedom-project/blob/main/index.html) by adding many more of the major features and replacing placeholder mechanics. This includes things such as `collisionFilters`, `hitboxes`, timed and simultaneous player movement, an end screen, and more different player interactions.
 
-####  Collision Filters and Hitboxes
+#### Collision Filters and Hitboxes
 
-I added `hitboxes` to multiple of my objects such as the ground and the players to make it so their interactions could be done from further away and the obejcts did not need to be directly against eachother. I made the `hitboxes` slightly larger than the actual object and made it follow their position so they could detect the collisions instead of the actual object:
+I added `hitboxes` to multiple of my objects such as the ground and the players to make it so their interactions could be done from further away and the objects did not need to be directly against each other. I made the `hitboxes` slightly larger than the actual objects and made it follow their position so they could detect the collisions instead of the actual object:
 
 ```js
 // player 1
@@ -46,7 +46,7 @@ Matter.Events.on(engine, "beforeUpdate", (event) => {
 
 The problem with this is that the hixboxes would collide with other objects when I only wanted them to sense when an interaction should be allowed, which is why I also needed to use `collision filters`.
 
-`collision filters` allow me to change which objects are allowed to physically collide with eachother, which when combined with `isSensor: true` allows me to make objects that only detect when object are touching but don't actually collide with anything else. I learned how to use `collision filters` through a [a website about phaser](https://reitgames.com/news/collision-filtering-phaser), which uses a similar collision filter system to _matterJS_ and then using an AI, [copilot](https://copilot.microsoft.com/), to help me figure out the small differences in syntax.
+`collision filters` allow me to change which objects are allowed to physically collide with each other, which when combined with `isSensor: true` allows me to make objects that only detect when object are touching but don't actually collide with anything else. I learned how to use `collision filters` through a [a website about phaser](https://reitgames.com/news/collision-filtering-phaser), which uses a similar collision filter system to _matterJS_ and then using an AI, [copilot](https://copilot.microsoft.com/), to help me figure out the small differences in syntax.
 
 Here is an example of the collision filters:
 
@@ -119,14 +119,14 @@ For making both players move at the same time I had to make multiple different `
     2. track time since turn start; `startCountDown()` 
     3. track inputs; `inputFunction(playerInputs, event)`
     4. end turn and reset for movement phase; `finishCountdown()`
-3. Movement Phase;  `startMovementPhase()`
+3. Movement Phase; `startMovementPhase()`
     1. Apply forces from inputs `runInputs(player, input)`
     2. Wait for movement to end (0.75 seconds); `Matter.Events.on(engine, "afterUpdate", (event) => {`
     3. Reset to start cycle again; `Matter.Events.on(engine, "afterUpdate", (event) => {`
 
 #### Different Player Interactions
 
-To make the game more interesting I also added multiple different playuer interactions such as jumping on your opponents head, pressing down to move faster, and slamming down on your opponent to make them smaller.
+To make the game more interesting I also added multiple different player interactions such as jumping on your opponents head, pressing down to move faster, and slamming down on your opponent to make them smaller.
 
 When jumping on your opponents head I made it so you get to jump like normal, but you push your opponent in the opposite direction compared to how you jump:
 
@@ -177,7 +177,7 @@ function runInputs(player, input) {
 }
 ```
 
-Slamming down on your opponent works by checking the if two conditions are met, you pressed `down` and your `hitbox` collided with the opponent (which is the `hurtbox`). This mechanic makes it more advantageous for players to try and stay above their opponents or in the air which would only be a negative thing without this mechanic as it also takes away movement options (jumping).
+Slamming down on your opponent works by checking if two conditions are met, you press `down` and your `hitbox` collides with the opponent (which is the `hurtbox`). This mechanic makes it more advantageous for players to try and stay above their opponents or in the air which would only be a negative thing without this mechanic as it also takes away movement options (jumping).
 
 ```js
 Matter.Events.on(engine, "collisionStart", (event) => {
@@ -200,7 +200,7 @@ Matter.Events.on(engine, "collisionStart", (event) => {
 
 #### Debugging
 
-_Debugging_ was one of the things I spent the most time on during the time between the last blog and this one. I had a very large amount of bugs that I had to deal with in this project and most of them would not show in the `console` so I had to manually go and comment out parts of code or use `console.log()` to check which parts were causing the issues like in my `stomping` mechanic which was inside multiple `if` statements and had parts in mutliple different `functions`. Knowing how to debug properly is a very important skill when coding as not knowing how to will cause you to spend a large amount of time trying to figure out issues because you don't know what exactly is causing them.
+_Debugging_ was one of the things I spent the most time on during the time between the last blog and this one. I had a very large amount of bugs that I had to deal with in this project and most of them would not show in the `console` so I had to manually go and comment out parts of code or use `console.log()` to check which parts were causing the issues like in my `stomping` mechanic which was inside multiple `if` statements and had parts in multiple different `functions`. Knowing how to debug properly is a very important skill when coding as not knowing how to will cause you to spend a large amount of time trying to figure out issues because you don't know what exactly is causing them.
 
 #### Using AI Properly
 
