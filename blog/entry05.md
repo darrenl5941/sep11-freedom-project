@@ -124,7 +124,75 @@ For making both players move at the same time I had to make multiple different `
     2. Wait for movement to end (0.75 seconds); `Matter.Events.on(engine, "afterUpdate", (event) => {`
     3. Reset to start cycle again; `Matter.Events.on(engine, "afterUpdate", (event) => {`
 
+#### Different Player Interactions
 
+To make the game more interesting I also added multiple different playuer interactions such as jumping on your opponents head, pressing down to move faster, and slamming down on your opponent to make them smaller.
+
+When jumping on your opponents head I made it so you get to jump like normal, but you push your opponent in the opposite direction compared to how you jump:
+
+```js
+function runInputs(player, input) {
+    //... down input and normal jump mechanics
+
+    if(input.includes("jumpOnHead")){
+        if(player == p1){
+            Body.applyForce(p2, p2.position, { x: 1.25 * forceScale, y: 0 });
+        } 
+        if(player == p2){
+            Body.applyForce(p1, p1.position, { x: 1.25 * forceScale, y: 0 });
+        }                      
+    }
+    if (input.includes("right")) {
+        Body.applyForce(player, player.position, { x: forceScale, y: 0 });
+        // ... other mechanic for down
+        // push player in opposite direction if jumping on head
+        if(input.includes("jumpOnHead")){
+            if(player == p1){
+                Body.applyForce(p2, p2.position, { x: -1.25 * forceScale, y: 0 });
+            } 
+            if(player == p2){
+                Body.applyForce(p1, p1.position, { x: -1.25 * forceScale, y: 0 });
+            }  
+        }
+    }
+    // ... same for left except opposite numbers
+}
+```
+
+Pressing down to mvoe faster just applies an extra force in the horizontal direction you move (left or right) to make it easier to use the next mechanic, shrinking your opponent.
+
+```js
+function runInputs(player, input) {
+    if (input.includes("left")) {
+        Body.applyForce(player, player.position, { x: -forceScale, y: 0 });
+        // bonus horizontal movement for moving down
+        if(input.includes("down")){
+            Body.applyForce(player, player.position, { x: -0.25 * forceScale, y: 0 });
+        }
+        // ... jumping on head mechanic
+    }
+    // ... same for right
+}
+```
+
+Slamming down on your opponent works by checking the if two conditions are met, you pressed `down` and your `hitbox` collided with the opponent (which is the `hurtbox`). This mechanic makes it more advantageous for players to try and stay above their opponents or in the air which would only be a negative thing without this mechanic as it also takes away movement options (jumping).
+
+```js
+Matter.Events.on(engine, "collisionStart", (event) => {
+            event.pairs.forEach(({ bodyA, bodyB }) => {
+                const labels = [bodyA.label, bodyB.label];
+                // ... other collision checks
+
+                // stomping mechanic
+                if (phase === "movement" && p1Input.includes("down")) {
+                    Body.setDensity(p2, p2.density * 0.90);
+                    Body.scale(p2, 0.90, 0.90); // size change (also affects density/weight)
+                    Body.scale(p2Sensor, 0.90, 0.90); 
+                }
+                // ... same for player 2
+            }); 
+        });
+```
 
 
 
