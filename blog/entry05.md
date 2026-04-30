@@ -7,7 +7,7 @@ I am currently on _part 7_ of the **EDP**, improving as needed. I have already f
 
 ### How I Finished My MVP (Minimum Viable Project)
 
-I have finished my [MVP](https://github.com/darrenl5941/sep11-freedom-project/blob/main/index.html) by adding many more of the major features and replacing placeholder mechanics. This includes things such as `collisionFilters`, `hitboxes`, timed and simultaneous player movement, an end screen, and more different player interactions.
+I have finished my [MVP](https://github.com/darrenl5941/sep11-freedom-project/blob/main/index.html) by adding many more of the major features and replacing placeholder mechanics. This includes things such as `collisionFilters`, `hitboxes`, timed and simultaneous player movement, an end screen, and more different player interactions. Here is the [preview of my MVP](https://darrenl5941.github.io/sep11-freedom-project/)
 
 #### Collision Filters and Hitboxes
 
