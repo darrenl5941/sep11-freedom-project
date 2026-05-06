@@ -66,14 +66,13 @@
         const engine = Engine.create();
         const runner = Runner.create();
 
-
         // Create a renderer
         var render = Render.create({
             element: document.body,
             engine: engine,
             options: {
-                width: 1367, // William said make it 1367 because it concidentally fits perfectly
-                height: 600,
+                width: 1380, 
+                height: 770,
                 wireframes: false // Set to true to see wireframes instead of solid shapes
             }
         });
@@ -165,6 +164,9 @@
             collisionFilter: {
                 category: GROUND,
                 mask: PLAYER // players collide with ground
+            },
+            render: {
+                fillStyle: 'gray', // fill color
             }
         }); 
         var groundHitbox = Bodies.rectangle(675, 490, 1050, 50, { // for jumping
@@ -202,7 +204,7 @@
         var p1Sensor = Bodies.rectangle(250, 400, 140, 140, {
             label: "p1Sensor",
             isSensor: true, // allows to still detect collisions without actually colliding 
-             collisionFilter: {
+            collisionFilter: {
                 category: GHOST,
                 mask: PLAYER // only collide with real player
             },
@@ -217,7 +219,7 @@
         var p2Sensor = Bodies.rectangle(1100, 400, 140, 140, {
             label: "p2Sensor",
             isSensor: true, // allows to still detect collisions without actually colliding 
-             collisionFilter: {
+            collisionFilter: {
                 category: GHOST,
                 mask: PLAYER // only collide with real player
             },
@@ -310,7 +312,7 @@
                     startCountDown();
                 }
 
-                document.getElementById("displayAction").innerText = "Action: ";
+                displayActions(false);
                 return; // to help prevent errors related to changing turns
             }
 
@@ -338,7 +340,7 @@
                     clearInterval(countDownStored);
                     countDownStored = null; // allow the function to run again
                     document.getElementById("displayTimer").innerText = "0.00 s";
-                    document.getElementById("displayAction").innerText = "Action: "; // prevent pervious players actions from being displayed if timer is up              
+                    displayActions(false);          
                 }
             }, 10);
         }
@@ -422,9 +424,7 @@
                 }
                 playerInputs.push("right"); // add right
             }
-
-            // Update UI from the authoritative array
-            document.getElementById("displayAction").innerText = "Action: " + playerInputs.join(" + "); // Update UI
+            displayActions(true, playerInputs);
         }
 
         function startMovementPhase() {
@@ -503,6 +503,24 @@
         //         }
         //     }
         // });
+
+        function displayActions(showActions, playerInputs) {
+            if (!showActions) {
+                document.getElementById("displayAction").innerText = "Action: "; // prevent actions from being displayed    
+            }
+            else{
+                // Update UI from the authoritative array
+                if (pCurrent == p1) {
+                    document.getElementById("displayAction").innerText =  "Player 1 Action: " + playerInputs.join(" + "); // Update UI
+                }
+                else if (pCurrent == p2) {
+                    document.getElementById("displayAction").innerText =  "Player 2 Action: " + playerInputs.join(" + "); // Update UI
+                }
+                else {
+                    document.getElementById("displayAction").innerText =  "Action: " + playerInputs.join(" + "); // Update UI
+                }
+            }
+        }
 
         // Add all of the bodies to the world
         World.add(engine.world, [groundHitbox, p1Sensor, p2Sensor, ground, p1, p2]);
