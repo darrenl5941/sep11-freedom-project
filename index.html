@@ -77,6 +77,8 @@
             }
         });
 
+        let round = 1; // keep track of the round
+
         // to keep track of timing and keep everything in sync
         let movementPhase = false;
         let movementTime = 0;
@@ -304,6 +306,7 @@
                 // If both players are ready, Space starts the movement phase
                 if (p1Ready && p2Ready && countDownStored == null) {
                     startMovementPhase();
+                    round++;
                     return; // prevent count down phase
                 }
 
@@ -506,18 +509,15 @@
 
         function displayActions(showActions, playerInputs) {
             if (!showActions) {
-                document.getElementById("displayAction").innerText = "Action: "; // prevent actions from being displayed    
+                document.getElementById("displayAction").innerText = `Round ${round}, action: `; // prevent actions from being displayed    
             }
             else{
                 // Update UI from the authoritative array
                 if (pCurrent == p1) {
-                    document.getElementById("displayAction").innerText =  "Player 1 Action: " + playerInputs.join(" + "); // Update UI
+                    document.getElementById("displayAction").innerText =  `Player 1 round ${round}, action: ` + playerInputs.join(" + "); // Update UI
                 }
-                else if (pCurrent == p2) {
-                    document.getElementById("displayAction").innerText =  "Player 2 Action: " + playerInputs.join(" + "); // Update UI
-                }
-                else {
-                    document.getElementById("displayAction").innerText =  "Action: " + playerInputs.join(" + "); // Update UI
+                else { // p2
+                    document.getElementById("displayAction").innerText =  `Player 2 round ${round}, action: ` + playerInputs.join(" + "); // Update UI
                 }
             }
         }

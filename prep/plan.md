@@ -24,11 +24,15 @@
 #### Beyond MVP
 
 - [X] Add more minor interactions between combining different basic movement options
-- [ ] Create size/density changes for damage
-- [ ] Add preview/indicator for what each action will do <!-- current player needs to stay there but new one needs to have a looping animation with same element without multiple stacking on eachother -->
+- [X] Create size/density changes for damage
+- [X] Make platform more visible/not the same color as background
+- [X] Round/Turn display for clarity
+- [ ] Add preview/indicator for what each action will do <!-- current player needs to stay there but new one needs to have a looping animation with same element without multiple stacking on each other -->
+- [ ] Make a win/lose scene for when the game ends
 - [ ] Add different moves other than just basic movement
   - [ ] Balancing
 - [ ] Add sound effects for collisions
+- [ ] Change hitboxes so there are less false collisions (would require making more dynamic hitboxes)
 - [ ] Make camera track on players or movable camera
 - [ ] Add different shapes/characters with different moves
   - [ ] Balancing
