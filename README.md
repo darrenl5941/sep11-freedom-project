@@ -10,7 +10,7 @@ For my project, I chose to independently study **X** in order to help me make **
 
 [Product](https://darrenl5941.github.io/sep11-freedom-project/)
 
-[Presentation]()
+[Presentation](https://docs.google.com/presentation/d/1HPa_sv7b60Mlwql0J59tL15lKQmgksQCFUiRvqNvJAI/edit?slide=id.g3e10607db33_0_187#slide=id.g3e10607db33_0_187)
 
 ## Implications
 ##### PROS
