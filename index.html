@@ -275,7 +275,7 @@
         });
 
         Matter.Events.on(engine, "afterUpdate", (event) => {
-            if (!movementPhase) return; // prevents running while movement phase active
+            if (!movementPhase) return; // prevents running while movement phase is not active
 
             movementTime += event.delta; // add milliseconds since last tick; delta is time since last tick in the engine
 
