@@ -127,6 +127,7 @@
         });
 
         var boxB = Bodies.rectangle(600, 200, 80, 80, {
+            isSensor: true, // allows for detecting collisions for events/etc even when actual collisions are off
             collisionFilter: {
                 category: OTHER,
                 mask: PLAYER | GROUND
