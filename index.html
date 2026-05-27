@@ -286,7 +286,6 @@
                 // Reset for next round
                 p1Ready = false;
                 p2Ready = false;
-                pCurrent = p1; // or whoever starts next round
                 spacePressed = false;
                 phase = "input"; // go back to input phases
                 // clear inputs
@@ -304,59 +303,30 @@
                 spacePressed = true; // prevents constant toggling
 
                 // If both players are ready, Space starts the movement phase
-                if (p1Ready && p2Ready && countDownStored == null) {
+                if (p1Ready && p2Ready) {
                     startMovementPhase();
                     round++;
                     return; // prevent count down phase
                 }
 
-                if (countDownStored == null) {
-                    countdownFor = pCurrent;
-                    startCountDown();
-                }
-
+                finishTurn();
                 displayActions(false);
-                return; // to help prevent errors related to changing turns
             }
 
             if (movementPhase) return; // prevent inputs during the movement phase
 
             inputFunction(pCurrent == p1 ? p1Input : p2Input, event); // runs the function for p1/p2 depending on which one is the current player
         });
-  
-        // for pausing
-        let countDown = 5;
-        let countDownStored = null; // to store the count down function
-        function startCountDown() {
-            // prevent multiple intervals running at once
-            if (countDownStored != null) return; // ends the loop if it tries to run again while already running
-
-            countDownStored = setInterval(() => {
-                if (countDown > 0) {
-                    countDown -= 0.01;
-                    document.getElementById("displayTimer").innerText = countDown.toFixed(2) + "s";
-                    // console.log(countDown) // for testing
-                } else {
-                    finishCountdown();
-
-                    countDown = 5;
-                    clearInterval(countDownStored);
-                    countDownStored = null; // allow the function to run again
-                    document.getElementById("displayTimer").innerText = "0.00 s";
-                    displayActions(false);          
-                }
-            }, 10);
-        }
-
-        function finishCountdown() {
-            if (countdownFor == p1) {
+        
+        function finishTurn() {
+            if (pCurrent == p1) {
                 p1Ready = true;
-            } 
-            else {
+                pCurrent = p2;
+            } else {
                 p2Ready = true;
+                pCurrent = p1;
             }
 
-            pCurrent = (pCurrent == p1) ? p2 : p1;
             spacePressed = false; // allow Space to be pressed again
         }
 
