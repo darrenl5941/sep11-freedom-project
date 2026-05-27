@@ -236,6 +236,8 @@
         let p1Input = [];
         let p2Input = [];
 
+        // platform shrinking over time
+        let platformWidth = 1000; // starting width
 
         const keys = {}; // Track which keys are down
 
@@ -278,6 +280,25 @@
             if (!movementPhase) return; // prevents running while movement phase is not active
 
             movementTime += event.delta; // add milliseconds since last tick; delta is time since last tick in the engine
+
+            // platform shrinking
+            const decay = 0.999;  // tweak this for faster/slower shrinking
+
+            platformWidth = (platformWidth * decay) - 0.5;  
+            platformWidth = Math.max(200, platformWidth); // don't shrink below 200px
+
+            // Update ground shape
+            Body.setVertices(
+                ground,
+                Bodies.rectangle(675, 500, platformWidth, 20).vertices
+            );
+
+            // Update hitbox shape
+            Body.setVertices(
+                groundHitbox,
+                Bodies.rectangle(675, 490, platformWidth + 50, 50).vertices
+            );
+
 
             if (movementTime >= 750) { // 0.75 seconds of time has passed
                 movementPhase = false;
