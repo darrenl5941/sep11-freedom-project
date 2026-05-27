@@ -315,6 +315,8 @@
 
             if (movementPhase) return; // prevent inputs during the movement phase
 
+            if (p1Ready && p2Ready) return; // prevent inputs once both players are ready (waiting for movement)
+
             inputFunction(pCurrent == p1 ? p1Input : p2Input, event); // runs the function for p1/p2 depending on which one is the current player
         });
         
@@ -324,7 +326,9 @@
                 pCurrent = p2;
             } else {
                 p2Ready = true;
-                pCurrent = p1;
+                if (!p1Ready) {
+                    pCurrent = p1;
+                }
             }
 
             spacePressed = false; // allow Space to be pressed again
