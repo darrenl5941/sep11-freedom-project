@@ -184,11 +184,11 @@
 
         // player 1
         var p1 = Bodies.rectangle(250, 400, 100, 100, {
-            friction: 0.01,
-            label: "p1",
+            friction: 0.01, // how much it slows down
+            label: "p1", // name when checking for collisions & etc
             collisionFilter: {
-                category: PLAYER,
-                mask: PLAYER | GROUND | GHOST
+                category: PLAYER, // catagory for collisions
+                mask: PLAYER | GROUND | GHOST // what it can collside with
             }
         });
 
