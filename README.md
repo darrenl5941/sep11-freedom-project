@@ -14,9 +14,14 @@ For my project, I chose to independently study **Matter.js** in order to help me
 
 ## Implications
 ##### PROS
-*
+* **Simultaneous decision‑making** can make the game more about mind-games.
+* There is a **low mechanical barrier**; players don’t need fast reflexes, making the game accessible to a wider audience.
+* **Emergent physics interactions** from _Matter.js_ can produce fun, surprising collisions.
+* **Short, snappy rounds** prevent make the game quick to play, preventing it from becomming boring.
 ##### CONS
-*
+* **Physics unpredictability** in Matter.js can produce jitter, odd bounces, or inconsistent knockback that may feel unfair.
+* **Limited expressive movement** from there only being 4 base inputs with the turn-based system removes the fluidity and combo potential of real‑time platform fighters.
+* **Potential niche appeal**, the hybrid of turn‑based and platform‑fighter mechanics may confuse or not be interesting to players expecting a traditional fighter.
 
 
 ## Blog
@@ -28,7 +33,3 @@ Below you will find my blog about how I made my project.
 * [Entry 4](blog/entry04.md)
 * [Entry 5](blog/entry05.md)
 * [Entry 6](blog/entry06.md)
-* [Entry 7](blog/entry07.md)
-* [Entry 8](blog/entry08.md)
-* [Entry 9](blog/entry09.md)
-* [Entry 10](blog/entry10.md)
