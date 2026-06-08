@@ -293,7 +293,7 @@ which are too tiny to move anything.
 
 
 
-Text
+<!-- Text -->
 
 [Previous](entry04.md) | [Next](entry06.md)
 
